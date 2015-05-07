@@ -1873,7 +1873,7 @@ public void drawPolyline(int[] pointArray) {
         }
     }
     OS.Polyline(handle, cast(POINT*)pointArray.ptr, pointArray.length / 2);
-    int length_ = pointArray.length;
+    int length_ = cast(int) pointArray.length;
     if (length_ >= 2) {
         if (data.lineWidth <= 1) {
             OS.SetPixel (handle, pointArray[length_ - 2], pointArray[length_ - 1], data.foreground);
@@ -2126,7 +2126,7 @@ public void drawString (String string, int x, int y, bool isTransparent) {
     //if (string is null) SWT.error(SWT.ERROR_NULL_ARGUMENT);
 //  TCHAR buffer = new TCHAR (getCodePage(), string, false);
     String16 wstr = StrToWCHARs( string );
-    int length_ = wstr.length;
+    int length_ = cast(int) wstr.length;
     if (length_ is 0) return;
     auto buffer = wstr.ptr;
     auto gdipGraphics = data.gdipGraphics;
@@ -2317,7 +2317,7 @@ public void drawText (String string, int x, int y, int flags) {
     if (gdipGraphics !is null) {
         checkGC(FONT | FOREGROUND | ((flags & SWT.DRAW_TRANSPARENT) !is 0 ? 0 : BACKGROUND));
         String16 wstr = StrToWCHARs( string );
-        int length_ = wstr.length;
+        int length_ = cast(int) wstr.length;
         auto buffer = wstr.ptr;
         Gdip.PointF pt;
         auto format = Gdip.StringFormat_Clone(Gdip.StringFormat_GenericTypographic());
@@ -2372,7 +2372,7 @@ public void drawText (String string, int x, int y, int flags) {
     }
     StringT wstr = StrToTCHARs( string );
     auto buffer = wstr.ptr;
-    int length_ = wstr.length;
+    int length_ = cast(int) wstr.length;
     if (length_ is 0) return;
     RECT rect;
     /*
@@ -4733,7 +4733,7 @@ public Point stringExtent(String string) {
     // SWT externsion: allow null string
     //if (string is null) SWT.error (SWT.ERROR_NULL_ARGUMENT);
     checkGC(FONT);
-    int length_ = string.length;
+    int length_ = cast(int) string.length;
     if (data.gdipGraphics !is null) {
         Gdip.PointF pt;
         Gdip.RectF bounds;
@@ -4741,7 +4741,7 @@ public Point stringExtent(String string) {
         if (length_ !is 0) {
             String16 wstr = StrToWCHARs( string );
             buffer = wstr.ptr;
-            length_ = wstr.length;
+            length_ = cast(int) wstr.length;
         } else {
             buffer = (" "w).ptr;
         }
@@ -4762,7 +4762,7 @@ public Point stringExtent(String string) {
 //      TCHAR buffer = new TCHAR (getCodePage(), string, false);
         String16 wstr = StrToWCHARs( string );
         LPCWSTR buffer = wstr.ptr;
-        length_ = wstr.length;
+        length_ = cast(int) wstr.length;
         OS.GetTextExtentPoint32W(handle, buffer, length_, &size);
         return new Point(size.cx, size.cy);
     }
@@ -4825,11 +4825,11 @@ public Point textExtent(String string, int flags) {
         Gdip.PointF pt;
         Gdip.RectF bounds;
         LPCWSTR buffer;
-        int length_ = string.length;
+        int length_ = cast(int) string.length;
         if (length_ !is 0) {
             String16 wstr = StrToWCHARs( string );
             buffer = wstr.ptr;
-            length_ = wstr.length;
+            length_ = cast(int) wstr.length;
         } else {
             buffer = (" "w).ptr;
         }
@@ -4853,7 +4853,7 @@ public Point textExtent(String string, int flags) {
     RECT rect;
     auto wstr = StrToTCHARs( string );
     LPCWSTR buffer = wstr.ptr;
-    int length_ = wstr.length;
+    int length_ = cast(int) wstr.length;
     int uFormat = OS.DT_LEFT | OS.DT_CALCRECT;
     if ((flags & SWT.DRAW_DELIMITER) is 0) uFormat |= OS.DT_SINGLELINE;
     if ((flags & SWT.DRAW_TAB) !is 0) uFormat |= OS.DT_EXPANDTABS;

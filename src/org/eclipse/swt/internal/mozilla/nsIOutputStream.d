@@ -6,12 +6,12 @@ import org.eclipse.swt.internal.mozilla.nsISupports;
 
 import org.eclipse.swt.internal.mozilla.nsIInputStream;
 
-typedef nsresult function(nsIOutputStream aOutStream,
+alias nsReadSegmentFun = nsresult function(nsIOutputStream aOutStream,
 	void *aClosure,
 	char *aToSegment,
 	PRUint32 aFromOffset,
 	PRUint32 aCount,
-	PRUint32 *aReadCount) nsReadSegmentFun;
+	PRUint32 *aReadCount);
 
 const char[] NS_IOUTPUTSTREAM_IID_STR = "0d0acd2a-61b4-11d4-9877-00c04fa0cf4a";
 

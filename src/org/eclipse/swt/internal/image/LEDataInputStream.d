@@ -16,7 +16,7 @@ module org.eclipse.swt.internal.image.LEDataInputStream;
 import java.io.InputStream;
 import java.lang.all;
 
-final class LEDataInputStream : InputStream{
+final class LEDataInputStream : InputStream {
 
     alias InputStream.read read;
 
@@ -69,7 +69,7 @@ final class LEDataInputStream : InputStream{
     /**
      * Answers how many bytes are available for reading without blocking
      */
-    public override int available() {
+    public override ptrdiff_t available() {
         if (buf is null) throw new IOException("buf is null");
         return (buf.length - pos) + host.available();
     }
@@ -92,8 +92,8 @@ final class LEDataInputStream : InputStream{
      * Don't imitate the JDK behaviour of reading a random number
      * of bytes when you can actually read them all.
      */
-    public override int read(byte b[], int off, int len) {
-        int read = 0, count;
+    public override ptrdiff_t read(byte b[], ptrdiff_t off, ptrdiff_t len) {
+        ptrdiff_t read = 0, count;
         while (read !is len && (count = readData(b, off, len - read)) !is -1) {
             off += count;
             read += count;

@@ -579,8 +579,8 @@ void dropDown (bool drop) {
  */
 dchar _findMnemonic (String str) {
     if (str is null) return '\0';
-    int index = 0;
-    int length = str.length;
+    size_t index = 0;
+    size_t length = str.length;
     do {
         while (index < length && str[index] !is '&') index++;
         if (++index >= length) return '\0';
@@ -1610,8 +1610,8 @@ public void setVisibleItemCount (int count) {
     visibleItemCount = count;
 }
 String stripMnemonic (String string) {
-    int index = 0;
-    int length_ = string.length;
+    size_t index = 0;
+    size_t length_ = string.length;
     do {
         while ((index < length_) && (string[index] !is '&')) index++;
         if (++index >= length_) return string;

@@ -6,7 +6,7 @@ import org.eclipse.swt.internal.mozilla.nsISupports;
 
 import org.eclipse.swt.internal.mozilla.nsICollection;
 
-typedef PRBool function(nsISupports, void*) nsISupportsArrayEnumFunc;
+alias nsISupportsArrayEnumFunc = PRBool function(nsISupports, void*);
 
 const char[] NS_ISUPPORTSARRAY_IID_STR = "791eafa0-b9e6-11d1-8031-006008159b5a";
 

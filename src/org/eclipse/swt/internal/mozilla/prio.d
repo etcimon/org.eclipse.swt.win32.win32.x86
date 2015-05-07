@@ -3,7 +3,7 @@ module org.eclipse.swt.internal.mozilla.prio;
 import org.eclipse.swt.internal.mozilla.Common;
 import org.eclipse.swt.internal.mozilla.prtime;
 import org.eclipse.swt.internal.mozilla.prinrval;
-
+import std.conv;
 extern (System):
 
 alias PRIntn PRDescIdentity;
@@ -311,18 +311,18 @@ version(NON_XPCOM_GLUE) {
     PRFileDesc * PR_Open(char *name, PRIntn flags, PRIntn mode);
 }
 
-const PR_IRWXU = 00700;
-const PR_IRUSR = 00400;
-const PR_IWUSR = 00200;
-const PR_IXUSR = 00100;
-const PR_IRWXG = 00070;
-const PR_IRGRP = 00040;
-const PR_IWGRP = 00020;
-const PR_IXGRP = 00010;
-const PR_IRWXO = 00007;
-const PR_IROTH = 00004;
-const PR_IWOTH = 00002;
-const PR_IXOTH = 00001;
+const PR_IRWXU = octal!700;
+const PR_IRUSR = octal!400;
+const PR_IWUSR = octal!200;
+const PR_IXUSR = octal!100;
+const PR_IRWXG = octal!70;
+const PR_IRGRP = octal!40;
+const PR_IWGRP = octal!20;
+const PR_IXGRP = octal!10;
+const PR_IRWXO = octal!7;
+const PR_IROTH = octal!4;
+const PR_IWOTH = octal!2;
+const PR_IXOTH = octal!1;
 
 version(NON_XPCOM_GLUE)
 {
