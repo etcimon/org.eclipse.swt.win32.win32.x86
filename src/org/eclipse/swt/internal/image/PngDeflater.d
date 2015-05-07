@@ -274,7 +274,7 @@ TryConst!(Code) findCode(int value, in Code[] codes) {
     int i, j, k;
 
     i = -1;
-    j = codes.length;
+    j = cast(int) codes.length;
     while (true) {
         k = (j + i) / 2;
         if (value < codes[k].min) {
@@ -390,7 +390,7 @@ Match findLongestMatch(int position, Link firstPosition) {
 
     }
 
-    if (bestMatch.length < MIN_LENGTH || bestMatch.distance < 1 || bestMatch.distance > WINDOW) {
+	if (cast(int) bestMatch.length < MIN_LENGTH || bestMatch.distance < 1 || bestMatch.distance > WINDOW) {
         return null;
     }
 
@@ -497,8 +497,8 @@ void compress() {
                 }
                 else {
                     // output deferredMatch
-                    outputMatch(deferredMatch.length, deferredMatch.distance);
-                    newPosition = deferredPosition + deferredMatch.length;
+						outputMatch(cast(int) deferredMatch.length, deferredMatch.distance);
+                    newPosition = deferredPosition + cast(int) deferredMatch.length;
                     deferredPosition = -1;
                     deferredMatch = null;
                     updateHashtable(position + 1, newPosition);
@@ -518,8 +518,8 @@ void compress() {
 
             // no match found
             if (deferredMatch !is null) {
-                outputMatch(deferredMatch.length, deferredMatch.distance);
-                newPosition = deferredPosition + deferredMatch.length;
+				outputMatch(cast(int) deferredMatch.length, deferredMatch.distance);
+                newPosition = deferredPosition + cast(int) deferredMatch.length;
                 deferredPosition = -1;
                 deferredMatch = null;
                 updateHashtable(position + 1, newPosition);
@@ -596,7 +596,7 @@ void store() {
 public byte[] deflate(in byte[] input) {
 
     istr = input;
-    inLength = input.length;
+    inLength = cast(int) input.length;
 
     // write zlib header
     bytes.write(cast(byte) 0x78); // window size = 0x70 (32768), compression method = 0x08

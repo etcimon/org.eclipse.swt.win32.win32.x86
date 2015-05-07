@@ -1136,7 +1136,7 @@ public class Accessible {
         Object[] nextItems = null;
         if (variants !is null && celt >= 1) {
             size_t endIndex = enumIndex + celt - 1;
-            if (endIndex > (variants.length - 1)) endIndex = variants.length - 1;
+            if (endIndex > (variants.length - 1)) endIndex = cast(int) variants.length - 1;
             if (enumIndex <= endIndex) {
                 nextItems = new Object[endIndex - enumIndex + 1];
                 for (int i = 0; i < nextItems.length; i++) {
@@ -1166,7 +1166,7 @@ public class Accessible {
                 }
             }
             if (pceltFetched !is null)
-                *pceltFetched = cast(ULONG)nextItems.length;
+                *pceltFetched = cast(int) cast(ULONG)nextItems.length;
             if (nextItems.length is celt) return COM.S_OK;
         } else {
             if (pceltFetched !is null){
@@ -1194,7 +1194,7 @@ public class Accessible {
         if (celt < 1 ) return COM.E_INVALIDARG;
         enumIndex += celt;
         if (enumIndex > (variants.length - 1)) {
-            enumIndex = cast(int)variants.length - 1;
+            enumIndex = cast(int) cast(int)variants.length - 1;
             return COM.S_FALSE;
         }
         return COM.S_OK;

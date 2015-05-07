@@ -373,7 +373,7 @@ void fixTabList (Control control) {
     }
     if (count is 0) return;
     Control [] newList = null;
-    int length = tabList.length - count;
+    int length = cast(int) tabList.length - count;
     if (length !is 0) {
         newList = new Control [length];
         int index = 0;
@@ -819,7 +819,7 @@ bool resizeChildren (bool defer, WINDOWPOS* [] pwp) {
     if (pwp is null) return true;
     HDWP hdwp;
     if (defer) {
-        hdwp = OS.BeginDeferWindowPos (pwp.length);
+		hdwp = OS.BeginDeferWindowPos (cast(int) pwp.length);
         if (hdwp is null) return false;
     }
     for (int i=0; i<pwp.length; i++) {

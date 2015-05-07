@@ -618,7 +618,7 @@ void createItem (CTabItem item, int index) {
     items = newItems;
     if (selectedIndex >= index) selectedIndex ++;
     int[] newPriority = new int[priority.length + 1];
-    int next = 0,  priorityIndex = cast(int)priority.length;
+    int next = 0,  priorityIndex = cast(int) cast(int)priority.length;
     for (int i = 0; i < priority.length; i++) {
         if (!mru && priority[i] is index) {
             priorityIndex = next++;
@@ -1112,7 +1112,7 @@ void drawTabArea(Event event) {
             left = simple ? SIMPLE_BOTTOM_LEFT_CORNER_BORDERLESS : BOTTOM_LEFT_CORNER_BORDERLESS;
             right = simple ? SIMPLE_BOTTOM_RIGHT_CORNER_BORDERLESS : BOTTOM_RIGHT_CORNER_BORDERLESS;
         }
-        shape = new int[left.length + right.length + 4];
+        shape = new int[left.length + cast(int) right.length + 4];
         int index = 0;
         shape[index++] = x;
         shape[index++] = y-highlight_header;
@@ -1137,7 +1137,7 @@ void drawTabArea(Event event) {
             left = simple ? SIMPLE_TOP_LEFT_CORNER_BORDERLESS : TOP_LEFT_CORNER_BORDERLESS;
             right = simple ? SIMPLE_TOP_RIGHT_CORNER_BORDERLESS : TOP_RIGHT_CORNER_BORDERLESS;
         }
-        shape = new int[left.length + right.length + 4];
+        shape = new int[left.length + cast(int) right.length + 4];
         int index = 0;
         shape[index++] = x;
         shape[index++] = y+height+highlight_header + 1;

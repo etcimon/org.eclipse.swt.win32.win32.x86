@@ -2373,7 +2373,7 @@ LRESULT wmClipboard (HWND hwndText, int msg, int wParam, int lParam) {
             end = OS.GetWindowTextLength (hwndText);
             //int length_ = OS.IsUnicode ? OS.wcslen (lParam) : OS.strlen (lParam);
             //TCHAR buffer = new TCHAR (getCodePage (), length_);
-            //int byteCount = buffer.length  * TCHAR.sizeof;
+            //int byteCount = cast(int) buffer.length  * TCHAR.sizeof;
             //OS.MoveMemory (buffer, lParam, byteCount);
             //newText = buffer.toString (0, length_);
             newText = TCHARzToStr( cast(TCHAR*)lParam );
@@ -2391,7 +2391,7 @@ LRESULT wmClipboard (HWND hwndText, int msg, int wParam, int lParam) {
             if (msg is OS.WM_SETTEXT) {
                 StringT buffer = StrToTCHARs( getCodePage(), newText, true );
                 auto hHeap = OS.GetProcessHeap ();
-                int byteCount = buffer.length * TCHAR.sizeof;
+                int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
                 auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
                 OS.MoveMemory (pszText, buffer.ptr, byteCount);
                 int code = OS.CallWindowProc (EditProc, hwndText, msg, wParam, cast(int) pszText);

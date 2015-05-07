@@ -403,7 +403,7 @@ void createAccelerators () {
         if (!OS.IsPPC) return;
         maxAccel = 1;
     } else {
-        maxAccel = OS.IsPPC ? items.length + 1 : items.length;
+        maxAccel = OS.IsPPC ? cast(int) items.length + 1 : cast(int) items.length;
     }
     ACCEL accel;
     byte [] buffer1 = new byte [ACCEL.sizeof];
@@ -1343,7 +1343,7 @@ public void setText (String string) {
     /* Ensure that the title appears in the task bar.*/
     if ((state & FOREIGN_HANDLE) !is 0) {
         auto hHeap = OS.GetProcessHeap ();
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         auto pszText = OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory (pszText, buffer.ptr, byteCount);
         OS.DefWindowProc (handle, OS.WM_SETTEXT, 0, cast(int) pszText);
@@ -1442,7 +1442,7 @@ override public void setVisible (bool visible) {
 
 void sort (Image [] images, ImageData [] datas, int width, int height, int depth) {
     /* Shell Sort from K&R, pg 108 */
-    int length = images.length;
+    int length = cast(int) images.length;
     if (length <= 1) return;
     for (int gap=length/2; gap>0; gap/=2) {
         for (int i=gap; i<length; i++) {
@@ -1507,7 +1507,7 @@ bool translateMDIAccelerator (MSG* msg) {
 
 bool traverseDecorations (bool next) {
     Control [] children = parent._getChildren ();
-    int length = children.length;
+    int length = cast(int) children.length;
     int index = 0;
     while (index < length) {
         if (children [index] is this) break;

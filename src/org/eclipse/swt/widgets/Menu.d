@@ -507,7 +507,7 @@ void createItem (MenuItem item, int index) {
             */
             auto hHeap = OS.GetProcessHeap ();
             StringT buffer = StrToTCHARs (0, " \0");
-            int byteCount = buffer.length * TCHAR.sizeof;
+            int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
             auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             OS.MoveMemory (pszText, buffer.ptr, byteCount);
             MENUITEMINFO info;
@@ -908,7 +908,7 @@ int GetMenuItemCount (HANDLE handle) {
 override String getNameText () {
     String result = "";
     MenuItem [] items = getItems ();
-    int length_ = items.length;
+    int length_ = cast(int) items.length;
     if (length_ > 0) {
         for (int i=0; i<length_-1; i++) {
             result = result ~ items [i].getNameText() ~ ", ";

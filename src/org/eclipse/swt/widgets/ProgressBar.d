@@ -89,7 +89,7 @@ public class ProgressBar : Control {
             lpWndClass.hInstance = hInstance;
             lpWndClass.style &= ~OS.CS_GLOBALCLASS;
             lpWndClass.style |= OS.CS_DBLCLKS;
-            int byteCount = (ProgressBarClass.length+1) * TCHAR.sizeof;
+            int byteCount = cast(int) ((ProgressBarClass.length+1) * TCHAR.sizeof);
             TCHAR* lpszClassName = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             OS.MoveMemory (lpszClassName, ProgressBarClass.ptr, byteCount);
             lpWndClass.lpszClassName = lpszClassName;

@@ -226,8 +226,8 @@ protected void create(DeviceData deviceData) {
     auto hHeap = OS.GetProcessHeap();
     if (buffer !is null && buffer.length !is 0) {
         /* If user setup info from a print dialog was specified, restore the DEVMODE struct. */
-        lpInitData = cast(DEVMODE*)OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, buffer.length);
-        OS.MoveMemory(lpInitData, buffer.ptr, buffer.length);
+		lpInitData = cast(DEVMODE*)OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, cast(int) buffer.length);
+		OS.MoveMemory(lpInitData, buffer.ptr, cast(int) buffer.length);
     }
     handle = OS.CreateDC(driver.ptr, device.ptr, null, lpInitData);
     if (lpInitData !is null) OS.HeapFree(hHeap, 0, lpInitData);
@@ -313,7 +313,7 @@ public bool startJob(String jobName) {
     if (jobName !is null && jobName.length !is 0) {
         /* Use the character encoding for the default locale */
         StringT buffer = StrToTCHARs(0, jobName, true);
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         lpszDocName = cast(TCHAR*) OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory(lpszDocName, buffer.ptr, byteCount);
         di.lpszDocName = lpszDocName;
@@ -322,7 +322,7 @@ public bool startJob(String jobName) {
     if (data.printToFile && data.fileName !is null) {
         /* Use the character encoding for the default locale */
         StringT buffer = StrToTCHARs(0, data.fileName, true);
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         lpszOutput = cast(TCHAR*) OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory(lpszOutput, buffer.ptr, byteCount);
         di.lpszOutput = lpszOutput;

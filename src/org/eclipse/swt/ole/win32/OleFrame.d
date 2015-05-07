@@ -451,7 +451,7 @@ private HRESULT InsertMenus( HMENU hmenuShared, LPOLEMENUGROUPWIDTHS lpMenuWidth
     MENUITEMINFO lpmii;
     auto hHeap = OS.GetProcessHeap();
     int cch = 128;
-    int byteCount = cch * TCHAR.sizeof;
+	int byteCount = cast(int) (cch * TCHAR.sizeof);
     auto pszText = cast(TCHAR*) OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     lpmii.cbSize = OS.MENUITEMINFO_sizeof;
     lpmii.fMask = OS.MIIM_STATE | OS.MIIM_ID | OS.MIIM_TYPE | OS.MIIM_SUBMENU | OS.MIIM_DATA;

@@ -957,7 +957,7 @@ Menu [] findMenus (Control control) {
 
 char findMnemonic (String string) {
     int index = 0;
-    int length_ = string.length;
+    int length_ = cast(int) string.length;
     do {
         while (index < length_ && string.charAt (index) !is '&') index++;
         if (++index >= length_) return '\0';
@@ -1176,7 +1176,7 @@ String getClipboardText () {
         auto hMem = OS.GetClipboardData (OS.IsUnicode ? OS.CF_UNICODETEXT : OS.CF_TEXT);
         if (hMem !is null) {
             /* Ensure byteCount is a multiple of 2 bytes on UNICODE platforms */
-            int byteCount = OS.GlobalSize (hMem) / TCHAR.sizeof * TCHAR.sizeof;
+			int byteCount = cast(int) (OS.GlobalSize (hMem) / TCHAR.sizeof * TCHAR.sizeof);
             auto ptr = OS.GlobalLock (hMem);
             if (ptr !is null) {
                 /* Use the character encoding for the default locale */
@@ -1624,7 +1624,7 @@ bool isActive () {
     Shell [] modalShells = display.modalShells;
     if (modalShells !is null) {
         int bits = SWT.APPLICATION_MODAL | SWT.SYSTEM_MODAL;
-        int index = modalShells.length;
+        int index = cast(int) modalShells.length;
         while (--index >= 0) {
             Shell modal = modalShells [index];
             if (modal !is null) {
@@ -3264,7 +3264,7 @@ public void setVisible (bool visible) {
 
 void sort (int [] items) {
     /* Shell Sort from K&R, pg 108 */
-    int length = items.length;
+    int length = cast(int) items.length;
     for (int gap=length/2; gap>0; gap/=2) {
         for (int i=gap; i<length; i++) {
             for (int j=i-gap; j>=0; j-=gap) {
@@ -3595,7 +3595,7 @@ bool traverseGroup (bool next) {
     Control root = computeTabRoot ();
     Control group = computeTabGroup ();
     Control [] list = root.computeTabList ();
-    int length = list.length;
+    int length = cast(int) list.length;
     int index = 0;
     while (index < length) {
         if (list [index] is group) break;
@@ -3621,7 +3621,7 @@ bool traverseGroup (bool next) {
 
 bool traverseItem (bool next) {
     Control [] children = parent._getChildren ();
-    int length = children.length;
+    int length = cast(int) children.length;
     int index = 0;
     while (index < length) {
         if (children [index] is this) break;

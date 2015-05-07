@@ -605,7 +605,7 @@ public this (Device device, String filename) {
     */
     if (gdip && (void*).sizeof is 8 && filename.toLowerCase().endsWith(".gif")) gdip = false;
     if (gdip) {
-        int length = filename.length;
+        int length = cast(int) filename.length;
         char[] chars = new char[length+1];
         filename.getChars(0, length, chars, 0);
         auto bitmap = Gdip.Bitmap_new( .StrToWCHARz( filename ), false);
@@ -725,7 +725,7 @@ public this (Device device, String filename) {
                                     default:
                                 }
                                 byte[] data = new byte[ stride * height ], alphaData = null;
-                                OS.MoveMemory(data.ptr, pixels, data.length);
+								OS.MoveMemory(data.ptr, pixels,cast(int) data.length);
                                 switch (lockedBitmapData.PixelFormat) {
                                     case Gdip.PixelFormat16bppARGB1555:
                                         alphaData = new byte[width * height];
@@ -798,7 +798,7 @@ HBITMAP createDIBFromDDB(HDC hDC, HBITMAP hBitmap, int width, int height) {
     else bmiHeader.biCompression = OS.BI_RGB;
     byte[] bmi;
     if (isDirect) bmi = new byte[BITMAPINFOHEADER.sizeof + (useBitfields ? 12 : 0)];
-    else  bmi = new byte[BITMAPINFOHEADER.sizeof + rgbs.length * 4];
+    else  bmi = new byte[BITMAPINFOHEADER.sizeof + cast(int) rgbs.length * 4];
     OS.MoveMemory(bmi.ptr, &bmiHeader, BITMAPINFOHEADER.sizeof);
 
     /* Set the rgb colors into the bitmap info */
@@ -974,7 +974,7 @@ int /*long*/ [] createGdipImage() {
                     }
                 }
                 auto hHeap = OS.GetProcessHeap();
-                auto pixels = cast(ubyte*)OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, srcData.length);
+				auto pixels = cast(ubyte*)OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, cast(int) srcData.length);
                 if (pixels is null) SWT.error(SWT.ERROR_NO_HANDLES);
                 OS.MoveMemory(pixels, srcData.ptr, sizeInBytes);
                 return [ cast(int)(Gdip.Bitmap_new(imgWidth, imgHeight, dibBM.bmWidthBytes, Gdip.PixelFormat32bppARGB, pixels)), cast(int) pixels];
@@ -1022,7 +1022,7 @@ int /*long*/ [] createGdipImage() {
                 OS.SelectObject(memHdc, oldMemBitmap);
                 OS.DeleteObject(memHdc);
                 ubyte[] srcData = new ubyte[dibBM.bmWidthBytes * dibBM.bmHeight];
-                OS.MoveMemory(srcData.ptr, dibBM.bmBits, srcData.length);
+				OS.MoveMemory(srcData.ptr, dibBM.bmBits, cast(int) srcData.length);
                 OS.DeleteObject(memDib);
                 OS.SelectObject(srcHdc, iconInfo.hbmMask);
                 for (int y = 0, dp = 3; y < imgHeight; ++y) {
@@ -1041,9 +1041,9 @@ int /*long*/ [] createGdipImage() {
                 OS.DeleteObject(srcHdc);
                 device.internal_dispose_GC(hDC, null);
                 auto hHeap = OS.GetProcessHeap();
-                pixels = cast(ubyte*) OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, srcData.length);
+				pixels = cast(ubyte*) OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, cast(int) srcData.length);
                 if (pixels is null) SWT.error(SWT.ERROR_NO_HANDLES);
-                OS.MoveMemory(pixels, srcData.ptr, srcData.length);
+				OS.MoveMemory(pixels, srcData.ptr, cast(int) srcData.length);
                 img = Gdip.Bitmap_new(imgWidth, imgHeight, dibBM.bmWidthBytes, Gdip.PixelFormat32bppARGB, pixels);
             } else {
                 img = Gdip.Bitmap_new(handle);
@@ -1771,12 +1771,12 @@ static int[] init_(Device device, Image image, ImageData i) {
     bmiHeader.biBitCount = cast(short)i.depth;
     if (useBitfields) bmiHeader.biCompression = OS.BI_BITFIELDS;
     else bmiHeader.biCompression = OS.BI_RGB;
-    bmiHeader.biClrUsed = rgbs is null ? 0 : rgbs.length;
+    bmiHeader.biClrUsed = rgbs is null ? 0 : cast(int) rgbs.length;
     byte[] bmi;
     if (i.palette.isDirect)
         bmi = new byte[BITMAPINFOHEADER.sizeof + (useBitfields ? 12 : 0)];
     else
-        bmi = new byte[BITMAPINFOHEADER.sizeof + rgbs.length * 4];
+        bmi = new byte[BITMAPINFOHEADER.sizeof + cast(int) rgbs.length * 4];
     OS.MoveMemory(bmi.ptr, &bmiHeader, BITMAPINFOHEADER.sizeof);
     /* Set the rgb colors into the bitmap info */
     int offset = BITMAPINFOHEADER.sizeof;
@@ -1835,7 +1835,7 @@ static int[] init_(Device device, Image image, ImageData i) {
     if (i.scanlinePad !is 4 && (i.bytesPerLine % 4 !is 0)) {
         data = ImageData.convertPad(data, i.width, i.height, i.depth, i.scanlinePad, 4);
     }
-    OS.MoveMemory(pBits, data.ptr, data.length);
+	OS.MoveMemory(pBits, data.ptr, cast(int) data.length);
 
     int /*long*/ [] result = null;
     if (i.getTransparencyType() is SWT.TRANSPARENCY_MASK) {
@@ -1890,7 +1890,7 @@ static int[] init_(Device device, Image image, ImageData i) {
             if (image.transparentPixel is -1) {
                 image.alpha = i.alpha;
                 if (i.alpha is -1 && i.alphaData !is null) {
-                    int length = i.alphaData.length;
+                    int length = cast(int) i.alphaData.length;
                     image.alphaData = new byte[length];
                     System.arraycopy(i.alphaData, 0, image.alphaData, 0, length);
                 }
@@ -1920,7 +1920,7 @@ static int[] init__(Device device, Image image, ImageData source, ImageData mask
                 /* Grow the palette with black */
                 rgbs = new RGB[source.transparentPixel + 1];
                 System.arraycopy(newRGBs, 0, rgbs, 0, newRGBs.length);
-                for (int i = newRGBs.length; i <= source.transparentPixel; i++) {
+                for (int i = cast(int) newRGBs.length; i <= source.transparentPixel; i++) {
                     rgbs[i] = new RGB(0, 0, 0);
                 }
             } else {

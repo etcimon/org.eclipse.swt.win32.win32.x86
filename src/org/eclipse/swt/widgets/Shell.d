@@ -768,7 +768,7 @@ override HBRUSH findBrush (int value, int lbStyle) {
             default:
         }
     }
-    int length_ = brushes.length;
+    int length_ = cast(int) brushes.length;
     HBRUSH hBrush = brushes [--length_];
     if (hBrush !is null) OS.DeleteObject (hBrush);
     System.arraycopy (brushes, 0, brushes, 1, length_);
@@ -1388,7 +1388,7 @@ void setActiveControl (Control control) {
     Control [] activate = (control is null) ? new Control [0] : control.getPath ();
     Control [] deactivate = (lastActive is null) ? new Control [0] : lastActive.getPath ();
     lastActive = control;
-    int index = 0, length = Math.min (activate.length, deactivate.length);
+	int index = 0, length = cast(int) Math.min(activate.length, deactivate.length);
     while (index < length) {
         if (activate [index] !is deactivate [index]) break;
         index++;
@@ -1400,12 +1400,12 @@ void setActiveControl (Control control) {
     * this happens, keep processing those widgets that
     * are not disposed.
     */
-    for (int i=deactivate.length-1; i>=index; --i) {
+	for (int i=cast(int) deactivate.length-1; i>=index; --i) {
         if (!deactivate [i].isDisposed ()) {
             deactivate [i].sendEvent (SWT.Deactivate);
         }
     }
-    for (int i=activate.length-1; i>=index; --i) {
+	for (int i=cast(int) activate.length-1; i>=index; --i) {
         if (!activate [i].isDisposed ()) {
             activate [i].sendEvent (SWT.Activate);
         }
@@ -1706,7 +1706,7 @@ void setToolTipText (NMTTDISPINFO* lpnmtdi, CCHAR [] buffer) {
     if (!hasCursor ()) return;
     auto hHeap = OS.GetProcessHeap ();
     if (lpstrTip !is null) OS.HeapFree (hHeap, 0, lpstrTip);
-    int byteCount = buffer.length;
+    int byteCount = cast(int) buffer.length;
     lpstrTip = cast(TCHAR*)OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     OS.MoveMemory (lpstrTip, buffer.ptr, byteCount);
     lpnmtdi.lpszText = lpstrTip;
@@ -1722,7 +1722,7 @@ void setToolTipText (NMTTDISPINFO* lpnmtdi, CWCHAR [] buffer) {
     if (!hasCursor ()) return;
     auto hHeap = OS.GetProcessHeap ();
     if (lpstrTip !is null) OS.HeapFree (hHeap, 0, lpstrTip);
-    int byteCount = buffer.length * 2;
+    int byteCount = cast(int) buffer.length * 2;
     lpstrTip = cast(TCHAR*)OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     OS.MoveMemory (lpstrTip, buffer.ptr, byteCount);
     lpnmtdi.lpszText = lpstrTip;

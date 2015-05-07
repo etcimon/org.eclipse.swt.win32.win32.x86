@@ -476,7 +476,7 @@ override public Point computeSize (int wHint, int hHint, bool changed) {
                 if (newFont !is null) oldFont = OS.SelectObject (hDC, newFont);
                 TEXTMETRIC lptm;
                 OS.GetTextMetrics (hDC, &lptm);
-                int length_ = text.length;
+                int length_ = cast(int) text.length;
                 if (length_ is 0) {
                     height = Math.max (height, lptm.tmHeight);
                 } else {

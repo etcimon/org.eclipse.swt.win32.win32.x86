@@ -1540,7 +1540,7 @@ void createItem (TableColumn column, int index) {
             int width = lvColumn.cx;
             int cchTextMax = 1024;
             auto hHeap = OS.GetProcessHeap ();
-            int byteCount = cchTextMax * TCHAR.sizeof;
+			int byteCount = cast(int) (cchTextMax * TCHAR.sizeof);
             auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             lvColumn.mask = OS.LVCF_TEXT | OS.LVCF_IMAGE | OS.LVCF_WIDTH | OS.LVCF_FMT;
             lvColumn.pszText = pszText;
@@ -1622,7 +1622,7 @@ void createItem (TableItem item, int index) {
         * memory usage.
         */
         bool small = drawCount is 0 && OS.IsWindowVisible (handle);
-        int length = small ? items.length + 4 : Math.max (4, items.length * 3 / 2);
+		int length = cast(int) (small ? items.length + 4 : Math.max (4, items.length * 3 / 2));
         TableItem [] newItems = new TableItem [length];
         System.arraycopy (items, 0, newItems, 0, items.length);
         items = newItems;
@@ -1817,7 +1817,7 @@ void destroyItem (TableColumn column) {
             index = 1;
             int cchTextMax = 1024;
             auto hHeap = OS.GetProcessHeap ();
-            int byteCount = cchTextMax * TCHAR.sizeof;
+			int byteCount = cast(int) (cchTextMax * TCHAR.sizeof);
             auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             LVCOLUMN lvColumn;
             lvColumn.mask = OS.LVCF_TEXT | OS.LVCF_IMAGE | OS.LVCF_WIDTH | OS.LVCF_FMT;
@@ -1965,7 +1965,7 @@ void destroyItem (TableColumn column) {
             j++;
         }
         if (j !is newOrder.length) {
-            OS.SendMessage (handle, OS.LVM_SETCOLUMNORDERARRAY, newOrder.length, newOrder.ptr);
+			OS.SendMessage (handle, OS.LVM_SETCOLUMNORDERARRAY, cast(int) newOrder.length, newOrder.ptr);
             /*
             * Bug in Windows.  When LVM_SETCOLUMNORDERARRAY is used to change
             * the column order, the header redraws correctly but the table does
@@ -3149,7 +3149,7 @@ public void select (int [] indices) {
     checkWidget ();
     // SWT extension: allow null array
     //if (indices is null) error (SWT.ERROR_NULL_ARGUMENT);
-    int length = indices.length;
+    int length = cast(int) indices.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) return;
     LVITEM lvItem;
     lvItem.state = OS.LVIS_SELECTED;
@@ -4002,7 +4002,7 @@ public void setColumnOrder (int [] order) {
             //oldRects [i] = new RECT ();
             OS.SendMessage (hwndHeader, OS.HDM_GETITEMRECT, i, &oldRects [i]);
         }
-        OS.SendMessage (handle, OS.LVM_SETCOLUMNORDERARRAY, order.length, order.ptr);
+		OS.SendMessage (handle, OS.LVM_SETCOLUMNORDERARRAY, cast(int) order.length, order.ptr);
         /*
         * Bug in Windows.  When LVM_SETCOLUMNORDERARRAY is used to change
         * the column order, the header redraws correctly but the table does
@@ -4605,7 +4605,7 @@ bool setScrollWidth (TableItem item, bool force) {
                     int flags = OS.DT_CALCRECT | OS.DT_SINGLELINE | OS.DT_NOPREFIX;
                     StringT buffer = StrToTCHARs (getCodePage (), string, false);
                     RECT rect;
-                    OS.DrawText (hDC, buffer.ptr, buffer.length, &rect, flags);
+					OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, &rect, flags);
                     OS.SelectObject (hDC, oldFont);
                     OS.ReleaseDC (handle, hDC);
                     newWidth = Math.max (newWidth, rect.right - rect.left);
@@ -4714,7 +4714,7 @@ public void setSelection (int [] indices) {
     // SWT extension: allow null array
     //if (indices is null) error (SWT.ERROR_NULL_ARGUMENT);
     deselectAll ();
-    int length = indices.length;
+    int length = cast(int) indices.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) return;
     select (indices);
     int focusIndex = indices [0];
@@ -4776,7 +4776,7 @@ public void setSelection (TableItem [] items) {
     // SWT extension: allow null array
     //if (items is null) error (SWT.ERROR_NULL_ARGUMENT);
     deselectAll ();
-    int length = items.length;
+    int length = cast(int) items.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) return;
     int focusIndex = -1;
     for (int i=length-1; i>=0; --i) {
@@ -6370,7 +6370,7 @@ override LRESULT wmNotifyChild (NMHDR* hdr, int wParam, int lParam) {
                     * from drawing the selection when LVS_EX_FULLROWSELECT
                     * is set.
                     */
-                    int length_ = Math.min (string.length, plvfi.item.cchTextMax - 1);
+					int length_ = cast(int) Math.min (string.length, plvfi.item.cchTextMax - 1);
                     if (!tipRequested && plvfi.item.iSubItem is 0 && length_ is 0) {
                         string = " "; //$NON-NLS-1$
                         length_ = 1;
@@ -6380,7 +6380,9 @@ override LRESULT wmNotifyChild (NMHDR* hdr, int wParam, int lParam) {
                         buffer = display.tableBuffer = new char [plvfi.item.cchTextMax];
                     }
                     /* Prevents becoming an invalid multibyte string. */
-                    adjustUTF8index ( string, length_ );
+					long length__ = cast(long) length_;
+                    adjustUTF8index ( string, length__ );
+					length_ = cast(int) length__;
                     string.getChars (0, length_, buffer, 0);
                     buffer [length_++] = 0;
                     static if (OS.IsUnicode) {
@@ -6800,7 +6802,7 @@ LRESULT wmNotifyToolTip (NMHDR* hdr, int /*long*/ wParam, int /*long*/ lParam) {
                             NMTTDISPINFO* lpnmtdi = null;
                             if (hdr.code is OS.TTN_GETDISPINFOA) {
                                 lpnmtdi = cast(NMTTDISPINFO*)new NMTTDISPINFOA;
-                                OS.MoveMemory (cast(int) lpnmtdi, cast(void*) lParam, NMTTDISPINFOA.sizeof);
+								OS.MoveMemory (lpnmtdi, lParam, cast(int) NMTTDISPINFOA.sizeof);
                                 if (lpnmtdi.lpszText !is null) {
                                     (cast(char*)lpnmtdi.lpszText)[0] = 0;
                                 }
@@ -6827,7 +6829,7 @@ LRESULT wmNotifyToolTip (NMHDR* hdr, int /*long*/ wParam, int /*long*/ lParam) {
                                     StringT chars = StrToTCHARs(string, true );
                                     if (hdr.code is OS.TTN_GETDISPINFOA) {
                                         CHAR [] bytes = new CHAR [chars.length * 2];
-                                        OS.WideCharToMultiByte (getCodePage (), 0, chars.ptr, chars.length, bytes.ptr, bytes.length, null, null);
+										OS.WideCharToMultiByte (getCodePage (), 0, chars.ptr, cast(int) chars.length, bytes.ptr, cast(int) bytes.length, null, null);
                                         shell.setToolTipText (lpnmtdi, bytes);
                                         OS.MoveMemory (lParam, cast(NMTTDISPINFOA*)lpnmtdi, NMTTDISPINFOA.sizeof);
                                     } else {
@@ -6925,7 +6927,7 @@ LRESULT wmNotifyToolTip (NMTTCUSTOMDRAW* nmcd, int /*long*/ lParam) {
                         StringT buffer = StrToTCHARs (getCodePage (), string, false);
                         RECT textRect;
                         OS.SetRect (&textRect, x, cellRect.top, cellRect.right, cellRect.bottom);
-                        OS.DrawText (nmcd.nmcd.hdc, buffer.ptr, buffer.length, &textRect, flags);
+						OS.DrawText (nmcd.nmcd.hdc, buffer.ptr, cast(int) buffer.length, &textRect, flags);
                     }
                     gc.dispose ();
                     OS.RestoreDC (nmcd.nmcd.hdc, nSavedDC);

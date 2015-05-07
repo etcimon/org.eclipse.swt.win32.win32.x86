@@ -380,7 +380,7 @@ public void pack () {
     RECT rect;
     int flags = OS.DT_CALCRECT | OS.DT_NOPREFIX;
     StringT buffer = StrToTCHARs (parent.getCodePage (), text, false);
-    OS.DrawText (hDC, buffer.ptr, buffer.length, &rect, flags);
+	OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, &rect, flags);
     int headerWidth = rect.right - rect.left + Tree.HEADER_MARGIN;
     if (OS.COMCTL32_MAJOR >= 6 && OS.IsAppThemed ()) headerWidth += Tree.HEADER_EXTRA;
     if (image !is null || parent.sortColumn is this) {
@@ -677,7 +677,7 @@ override public void setText (String string) {
     */
     auto hHeap = OS.GetProcessHeap ();
     StringT buffer = StrToTCHARs (parent.getCodePage (), fixMnemonic (string, true), true);
-    int byteCount = buffer.length * TCHAR.sizeof;
+    int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
     auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     OS.MoveMemory (pszText, buffer.ptr, byteCount);
     auto hwndHeader = parent.hwndHeader;

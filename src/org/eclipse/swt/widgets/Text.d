@@ -450,7 +450,7 @@ override public Point computeSize (int wHint, int hHint, bool changed) {
         //This code is intentionally commented
 //      if (OS.COMCTL32_MAJOR >= 6) {
 //          if ((style & SWT.SEARCH) !is 0) {
-//              length = message.length ();
+//              length = cast(int) message.length ();
 //              if (length !is 0) {
 //                  char [] buffer = new char [length + 1];
 //                  message.getChars (0, length, buffer, 0);
@@ -1067,7 +1067,7 @@ int getTabWidth (int tabs) {
     if (newFont !is null) oldFont = OS.SelectObject (hDC, newFont);
     int flags = OS.DT_CALCRECT | OS.DT_SINGLELINE | OS.DT_NOPREFIX;
     StringT SPACE = StrToTCHARs (getCodePage (), " ", false);
-    OS.DrawText (hDC, SPACE.ptr, SPACE.length, &rect, flags);
+	OS.DrawText (hDC, SPACE.ptr, cast(int) SPACE.length, &rect, flags);
     if (newFont !is null) OS.SelectObject (hDC, oldFont);
     OS.ReleaseDC (handle, hDC);
     return (rect.right - rect.left) * tabs;
@@ -1252,7 +1252,7 @@ int mbcsToWcsPos (int mbcsPos) {
     int wcsTotal = 0, mbcsTotal = 0;
     CHAR [] buffer = new CHAR [128];
     String delimiter = getLineDelimiter();
-    int delimiterSize = delimiter.length;
+    int delimiterSize = cast(int) delimiter.length;
     int count = OS.SendMessageA (handle, OS.EM_GETLINECOUNT, 0, 0);
     for (int line=0; line<count; line++) {
         int wcsSize = 0;
@@ -1444,7 +1444,7 @@ override bool sendKeyEvent (int type, int msg, int wParam, int lParam, Event eve
                 if (start is 0) return true;
                 int lineStart = OS.SendMessage (handle, OS.EM_LINEINDEX, -1, 0);
                 if (start is lineStart) {
-                    start = start - DELIMITER.length;
+                    start = start - cast(int) DELIMITER.length;
                 } else {
                     start = start - 1;
                     if (!OS.IsUnicode && OS.IsDBLocale) {
@@ -1464,7 +1464,7 @@ override bool sendKeyEvent (int type, int msg, int wParam, int lParam, Event eve
                 int line = OS.SendMessage (handle, OS.EM_LINEFROMCHAR, end, 0);
                 int lineStart = OS.SendMessage (handle, OS.EM_LINEINDEX, line + 1, 0);
                 if (end is lineStart - DELIMITER.length) {
-                    end = end + DELIMITER.length;
+                    end = end + cast(int) DELIMITER.length;
                 } else {
                     end = end + 1;
                     if (!OS.IsUnicode && OS.IsDBLocale) {
@@ -2012,7 +2012,7 @@ int wcsToMbcsPos (int wcsPos) {
     int wcsTotal = 0, mbcsTotal = 0;
     CHAR [] buffer = new CHAR [128];
     String delimiter = getLineDelimiter ();
-    int delimiterSize = delimiter.length;
+    int delimiterSize = cast(int) delimiter.length;
     int count = OS.SendMessageA (handle, OS.EM_GETLINECOUNT, 0, 0);
     for (int line=0; line<count; line++) {
         int wcsSize = 0;

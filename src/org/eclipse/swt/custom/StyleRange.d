@@ -68,7 +68,7 @@ public this() {
 protected this( StyleRange other ){
     super( other );
     start = other.start;
-    length = other.length;
+    length = cast(int) other.length;
     fontStyle = other.fontStyle;
 }
 

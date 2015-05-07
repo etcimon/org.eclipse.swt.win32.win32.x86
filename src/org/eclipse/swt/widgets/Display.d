@@ -510,7 +510,7 @@ Control _getFocusControl () {
 
 void addBar (Menu menu) {
     if (bars is null) bars = new Menu [4];
-    int length_ = bars.length;
+    int length_ = cast(int) bars.length;
     for (int i=0; i<length_; i++) {
         if (bars [i] is menu) return;
     }
@@ -530,7 +530,7 @@ void addBar (Menu menu) {
 void addControl (HANDLE handle, Control control) {
     if (handle is null) return;
     if (freeSlot is -1) {
-        int length_ = (freeSlot = indexTable.length) + GROW_SIZE;
+		int length_ = (freeSlot = cast(int) indexTable.length) + GROW_SIZE;
         int [] newIndexTable = new int [length_];
         Control [] newControlTable = new Control [length_];
         System.arraycopy (indexTable, 0, newIndexTable, 0, freeSlot);
@@ -634,7 +634,7 @@ void addMenuItem (MenuItem item) {
             return;
         }
     }
-    item.id = items.length + ID_START;
+    item.id = cast(int) items.length + ID_START;
     MenuItem [] newItems = new MenuItem [items.length + 64];
     newItems [items.length] = item;
     System.arraycopy (items, 0, newItems, 0, items.length);
@@ -643,7 +643,7 @@ void addMenuItem (MenuItem item) {
 
 void addPopup (Menu menu) {
     if (popups is null) popups = new Menu [4];
-    int length_ = popups.length;
+    int length_ = cast(int) popups.length;
     for (int i=0; i<length_; i++) {
         if (popups [i] is menu) return;
     }
@@ -776,7 +776,7 @@ static void checkDisplay (Thread thread, bool multiple) {
 
 void clearModal (Shell shell) {
     if (modalShells is null) return;
-    int index = 0, length_ = modalShells.length;
+    int index = 0, length_ = cast(int) modalShells.length;
     while (index < length_) {
         if (modalShells [index] is shell) break;
         if (modalShells [index] is null) return;
@@ -1868,7 +1868,7 @@ ImageList getImageList (int style, int width, int height) {
     if (imageList is null) imageList = new ImageList [4];
 
     int i = 0;
-    int length_ = imageList.length;
+    int length_ = cast(int) imageList.length;
     while (i < length_) {
         ImageList list = imageList [i];
         if (list is null) break;
@@ -1898,7 +1898,7 @@ ImageList getImageListToolBar (int style, int width, int height) {
     if (toolImageList is null) toolImageList = new ImageList [4];
 
     int i = 0;
-    int length_ = toolImageList.length;
+    int length_ = cast(int) toolImageList.length;
     while (i < length_) {
         ImageList list = toolImageList [i];
         if (list is null) break;
@@ -1928,7 +1928,7 @@ ImageList getImageListToolBarDisabled (int style, int width, int height) {
     if (toolDisabledImageList is null) toolDisabledImageList = new ImageList [4];
 
     int i = 0;
-    int length_ = toolDisabledImageList.length;
+    int length_ = cast(int) toolDisabledImageList.length;
     while (i < length_) {
         ImageList list = toolDisabledImageList [i];
         if (list is null) break;
@@ -1958,7 +1958,7 @@ ImageList getImageListToolBarHot (int style, int width, int height) {
     if (toolHotImageList is null) toolHotImageList = new ImageList [4];
 
     int i = 0;
-    int length_ = toolHotImageList.length;
+    int length_ = cast(int) toolHotImageList.length;
     while (i < length_) {
         ImageList list = toolHotImageList [i];
         if (list is null) break;
@@ -2002,7 +2002,7 @@ int getMessageCount () {
 
 Shell getModalShell () {
     if (modalShells is null) return null;
-    int index = modalShells.length;
+    int index = cast(int) modalShells.length;
     while (--index >= 0) {
         Shell shell = modalShells [index];
         if (shell !is null) return shell;
@@ -2609,7 +2609,7 @@ override protected void init_ () {
         }
     }
     +/
-    int byteCount = windowClass_.length * TCHAR.sizeof;
+    int byteCount = cast(int) (windowClass_.length * TCHAR.sizeof);
     auto buf = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     lpWndClass.lpszClassName = buf;
     OS.MoveMemory (buf, windowClass_.ptr, byteCount);
@@ -2620,7 +2620,7 @@ override protected void init_ () {
     if (!OS.IsWinCE && OS.WIN32_VERSION >= OS.VERSION (5, 1)) {
         lpWndClass.style |= OS.CS_DROPSHADOW;
     }
-    byteCount = windowShadowClass.length * TCHAR.sizeof;
+    byteCount = cast(int) (windowShadowClass.length * TCHAR.sizeof);
     buf = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     lpWndClass.lpszClassName = buf;
     OS.MoveMemory (buf, windowShadowClass.ptr, byteCount);
@@ -2942,7 +2942,7 @@ static wchar mbcsToWcs (int ch, int codePage) {
     }
     wchar [] unicode = new wchar [1];
     int cp = codePage !is 0 ? codePage : OS.CP_ACP;
-    int count = OS.MultiByteToWideChar (cp, OS.MB_PRECOMPOSED, buffer.ptr, buffer.length, unicode.ptr, 1);
+	int count = OS.MultiByteToWideChar (cp, OS.MB_PRECOMPOSED, buffer.ptr, cast(int) buffer.length, unicode.ptr, 1);
     if (count is 0) return 0;
     return unicode [0];
 }
@@ -3471,7 +3471,7 @@ void postEvent (Event event) {
     */
     if (eventQueue is null) eventQueue = new Event [4];
     int index = 0;
-    int length_ = eventQueue.length;
+    int length_ = cast(int) eventQueue.length;
     while (index < length_) {
         if (eventQueue [index] is null) break;
         index++;
@@ -3718,7 +3718,7 @@ void releaseDisplay () {
 
 void releaseImageList (ImageList list) {
     int i = 0;
-    int length_ = imageList.length;
+    int length_ = cast(int) imageList.length;
     while (i < length_) {
         if (imageList [i] is list) {
             if (list.removeRef () > 0) return;
@@ -3737,7 +3737,7 @@ void releaseImageList (ImageList list) {
 
 void releaseToolImageList (ImageList list) {
     int i = 0;
-    int length_ = toolImageList.length;
+    int length_ = cast(int) toolImageList.length;
     while (i < length_) {
         if (toolImageList [i] is list) {
             if (list.removeRef () > 0) return;
@@ -3756,7 +3756,7 @@ void releaseToolImageList (ImageList list) {
 
 void releaseToolHotImageList (ImageList list) {
     int i = 0;
-    int length_ = toolHotImageList.length;
+    int length_ = cast(int) toolHotImageList.length;
     while (i < length_) {
         if (toolHotImageList [i] is list) {
             if (list.removeRef () > 0) return;
@@ -3775,7 +3775,7 @@ void releaseToolHotImageList (ImageList list) {
 
 void releaseToolDisabledImageList (ImageList list) {
     int i = 0;
-    int length_ = toolDisabledImageList.length;
+    int length_ = cast(int) toolDisabledImageList.length;
     while (i < length_) {
         if (toolDisabledImageList [i] is list) {
             if (list.removeRef () > 0) return;
@@ -3912,7 +3912,7 @@ bool runDeferredEvents () {
         /* Take an event off the queue */
         Event event = eventQueue [0];
         if (event is null) break;
-        int length_ = eventQueue.length;
+        int length_ = cast(int) eventQueue.length;
         System.arraycopy (eventQueue, 1, eventQueue, 0, --length_);
         eventQueue [length_] = null;
 
@@ -3943,7 +3943,7 @@ bool runPopups () {
     while (popups !is null) {
         Menu menu = popups [0];
         if (menu is null) break;
-        int length_ = popups.length;
+        int length_ = cast(int) popups.length;
         System.arraycopy (popups, 1, popups, 0, --length_);
         popups [length_] = null;
         runDeferredEvents ();
@@ -3998,7 +3998,7 @@ void saveResources () {
     if (resources is null) {
         resources = new Resource [RESOURCE_SIZE];
     } else {
-        resourceCount = resources.length;
+        resourceCount = cast(int) resources.length;
         Resource [] newResources = new Resource [resourceCount + RESOURCE_SIZE];
         System.arraycopy (resources, 0, newResources, 0, resourceCount);
         resources = newResources;
@@ -4234,7 +4234,7 @@ void setModalDialog (Dialog modalDailog) {
 
 void setModalShell (Shell shell) {
     if (modalShells is null) modalShells = new Shell [4];
-    int index = 0, length_ = modalShells.length;
+    int index = 0, length_ = cast(int) modalShells.length;
     while (index < length_) {
         if (modalShells [index] is shell) return;
         if (modalShells [index] is null) break;
@@ -4665,7 +4665,7 @@ int windowProc (HWND hwnd, uint msg, uint wParam, int lParam) {
 static String withCrLf (String string) {
 
     /* If the string is empty, return the string. */
-    int length_ = string.length;
+    int length_ = cast(int) string.length;
     if (length_ is 0) return string;
 
     /*

@@ -99,7 +99,7 @@ public class Group : Composite {
                     auto hHeap = OS.GetProcessHeap ();
                     lpWndClass.hInstance = hInstance;
                     lpWndClass.style &= ~(OS.CS_HREDRAW | OS.CS_VREDRAW);
-                    int byteCount = GroupClass.length * TCHAR.sizeof;
+                    int byteCount = cast(int) (GroupClass.length * TCHAR.sizeof);
                     auto lpszClassName = cast(TCHAR*)OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
                     OS.MoveMemory (lpszClassName, GroupClass.ptr, byteCount);
                     lpWndClass.lpszClassName = lpszClassName;
@@ -183,7 +183,7 @@ override protected void checkSubclass () {
 override public Point computeSize (int wHint, int hHint, bool changed) {
     checkWidget ();
     Point size = super.computeSize (wHint, hHint, changed);
-    int length = text.length;
+    int length = cast(int) text.length;
     if (length !is 0) {
         /*
         * Bug in Windows.  When a group control is right-to-left and
@@ -345,7 +345,7 @@ void printWidget (HWND hwnd, GC gc) {
         Control [] children = _getChildren ();
         Rectangle rect = getBounds ();
         OS.IntersectClipRect (hDC, 0, 0, rect.width, rect.height);
-        for (int i=children.length - 1; i>=0; --i) {
+		for (int i=cast(int)children.length - 1; i>=0; --i) {
             Point location = children [i].getLocation ();
             OS.SetWindowOrgEx (hDC, -location.x, -location.y, null);
             children [i].print (gc);

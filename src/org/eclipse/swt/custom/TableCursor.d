@@ -125,7 +125,7 @@ import org.eclipse.swt.widgets.Widget;
  *              if (e.keyCode !is SWT.MOD2 && (e.stateMask & SWT.MOD2) !is 0) return;
  *
  *              TableItem[] selection = table.getSelection();
- *              TableItem row = (selection.length is 0) ? table.getItem(table.getTopIndex()) : selection[0];
+ *              TableItem row = cast(int) (selection.length is 0) ? table.getItem(table.getTopIndex()) : selection[0];
  *              table.showItem(row);
  *              cursor.setSelection(row, 0);
  *              cursor.setVisible(true);

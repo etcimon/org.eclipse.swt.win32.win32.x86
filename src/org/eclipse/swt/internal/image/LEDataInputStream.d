@@ -71,7 +71,7 @@ final class LEDataInputStream : InputStream {
      */
     public override ptrdiff_t available() {
         if (buf is null) throw new IOException("buf is null");
-        return (buf.length - pos) + host.available();
+        return cast(int) (buf.length - pos) + host.available();
     }
 
     /**
@@ -94,7 +94,7 @@ final class LEDataInputStream : InputStream {
      */
     public override ptrdiff_t read(byte b[], ptrdiff_t off, ptrdiff_t len) {
         ptrdiff_t read = 0, count;
-        while (read !is len && (count = readData(b, off, len - read)) !is -1) {
+		while (read !is len && (count = readData(b, cast(int) off, cast(int) (len - read))) !is -1) {
             off += count;
             read += count;
         }
@@ -105,7 +105,7 @@ final class LEDataInputStream : InputStream {
 
     public override long skip(long n) {
         if (buf.length < position + n) {
-            n = buf.length - position;
+            n = cast(int) buf.length - position;
         }
         pos += n;
         position += n;
@@ -141,7 +141,7 @@ final class LEDataInputStream : InputStream {
         int newOffset = offset;
 
         // Are there pushback bytes available?
-        int available = buf.length - pos;
+        int available = cast(int) buf.length - pos;
         if (available > 0) {
             cacheCopied = (available >= len) ? len : available;
             System.arraycopy(buf, pos, buffer, newOffset, cacheCopied);
@@ -152,7 +152,7 @@ final class LEDataInputStream : InputStream {
         // Have we copied enough?
         if (cacheCopied is len) return len;
 
-        int inCopied = host.read( buffer, newOffset, len - cacheCopied );
+		int inCopied = cast(int) host.read( buffer, cast(int) newOffset, cast(int) (len - cacheCopied) );
         if( inCopied is -1 ) inCopied = -1;
         if (inCopied > 0 ) return inCopied + cacheCopied;
         if (cacheCopied is 0) return inCopied;
@@ -195,7 +195,7 @@ final class LEDataInputStream : InputStream {
      * @exception   java.io.IOException if the pushback buffer is too small
      */
     public void unread(byte[] b) {
-        int l = b.length;
+        int l = cast(int) b.length;
         if (l > pos) throw new IOException("cannot unread");
         position -= l;
         pos -= l;

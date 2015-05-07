@@ -11,7 +11,7 @@ scope class nsEmbedString
     this(wchar[] s)
     {
         nsresult result;
-        result = NS_StringContainerInit2(&str, s.ptr, s.length, 0);
+		result = NS_StringContainerInit2(&str, s.ptr, cast(int) s.length, 0);
         if (XPCOM.NS_FAILED(result)) 
             throw new Exception("Init string container fail");
     }
@@ -55,7 +55,7 @@ scope class nsEmbedCString
     this(char[] s)
     {
         nsresult result;
-        result = NS_CStringContainerInit2(&str, s.ptr, s.length, 0);
+		result = NS_CStringContainerInit2(&str, s.ptr, cast(int) s.length, 0);
         if (XPCOM.NS_FAILED(result)) 
             throw new Exception("Init string container fail");
     }

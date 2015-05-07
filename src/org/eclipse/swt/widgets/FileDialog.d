@@ -212,7 +212,7 @@ private static extern(Windows) uint OFNHookProc (HWND hdlg, uint uiMsg, uint wPa
                     //OS.MoveMemory (lpofn, ofn.lpOFN, OS.OPENFILENAME_sizeof);
                     if (lpofn.nMaxFile < lResult) {
                         auto hHeap = OS.GetProcessHeap ();
-                        auto lpstrFile = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, lResult * TCHAR.sizeof);
+						auto lpstrFile = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, cast(int) (lResult * TCHAR.sizeof));
                         if (lpstrFile !is null) {
                             if (lpofn.lpstrFile !is null) OS.HeapFree (hHeap, 0, lpofn.lpstrFile);
                             lpofn.lpstrFile = lpstrFile;
@@ -279,7 +279,7 @@ public String open () {
     if (title is null) title = "";
     /* Use the character encoding for the default locale */
     auto buffer3 = StrToTCHARs (0, title, true);
-    int byteCount3 = buffer3.length * TCHAR.sizeof;
+	int byteCount3 = cast(int) (buffer3.length * TCHAR.sizeof);
     auto lpstrTitle = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount3);
     OS.MoveMemory (lpstrTitle, buffer3.ptr, byteCount3);
 
@@ -297,7 +297,7 @@ public String open () {
     }
     /* Use the character encoding for the default locale */
     auto buffer4 = StrToTCHARs (0, strFilter, true);
-    int byteCount4 = buffer4.length * TCHAR.sizeof;
+	int byteCount4 = cast(int) (buffer4.length * TCHAR.sizeof);
     auto lpstrFilter = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount4);
     OS.MoveMemory (lpstrFilter, buffer4.ptr, byteCount4);
 
@@ -312,9 +312,9 @@ public String open () {
     */
     int nMaxFile = OS.MAX_PATH;
     if ((style & SWT.MULTI) !is 0) nMaxFile = Math.max (nMaxFile, BUFFER_SIZE);
-    int byteCount = nMaxFile * TCHAR.sizeof;
+	int byteCount = cast(int) (nMaxFile * TCHAR.sizeof);
     auto lpstrFile = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
-    int byteCountFile = Math.min (name.length * TCHAR.sizeof, byteCount - TCHAR.sizeof);
+	int byteCountFile = cast(int) Math.min (name.length * TCHAR.sizeof, byteCount - TCHAR.sizeof);
     OS.MoveMemory (lpstrFile, name.ptr, byteCountFile);
 
     /*
@@ -324,9 +324,9 @@ public String open () {
     if (filterPath is null) filterPath = "";
     /* Use the character encoding for the default locale */
     auto path = StrToTCHARs (0, filterPath.replace ('/', '\\'), true);
-    int byteCount5 = OS.MAX_PATH * TCHAR.sizeof;
+	int byteCount5 = cast(int) (OS.MAX_PATH * TCHAR.sizeof);
     auto lpstrInitialDir = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount5);
-    int byteCountDir = Math.min (path.length * TCHAR.sizeof, byteCount5 - TCHAR.sizeof);
+	int byteCountDir = cast(int) Math.min (path.length * TCHAR.sizeof, byteCount5 - TCHAR.sizeof);
     OS.MoveMemory (lpstrInitialDir, path.ptr, byteCountDir);
 
     /* Create the file dialog struct */
@@ -421,7 +421,7 @@ public String open () {
 
         /* Use the character encoding for the default locale */
         TCHAR[] buffer = NewTCHARs (0, struct_.nMaxFile);
-        int byteCount1 = buffer.length * TCHAR.sizeof;
+        int byteCount1 = cast(int) (buffer.length * TCHAR.sizeof);
         OS.MoveMemory (buffer.ptr, lpstrFile, byteCount1);
 
         /*
@@ -449,7 +449,7 @@ public String open () {
 
             /* Use the character encoding for the default locale */
             TCHAR[] prefix = NewTCHARs (0, nFileOffset - 1);
-            int byteCount2 = prefix.length * TCHAR.sizeof;
+            int byteCount2 = cast(int) (prefix.length * TCHAR.sizeof);
             OS.MoveMemory (prefix.ptr, lpstrFile, byteCount2);
             filterPath = TCHARsToStr( prefix );
 
@@ -477,7 +477,7 @@ public String open () {
 
             if (fileNames.length > 0) fileName = fileNames  [0];
             String separator = "";
-            int length_ = filterPath.length;
+            int length_ = cast(int) filterPath.length;
             if (length_ > 0 && filterPath[length_ - 1] !is '\\') {
                 separator = "\\";
             }

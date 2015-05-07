@@ -1009,7 +1009,7 @@ public void select (int [] indices) {
     checkWidget ();
     // SWT extension: allow null array
     //if (indices is null) error (SWT.ERROR_NULL_ARGUMENT);
-    int length = indices.length;
+    int length = cast(int) indices.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) return;
     select (indices, false);
 }
@@ -1236,7 +1236,7 @@ public void setItems (String [] items) {
         if (newFont !is null) oldFont = OS.SelectObject (hDC, newFont);
         OS.SendMessage (handle, OS.LB_SETHORIZONTALEXTENT, 0, 0);
     }
-    int length = items.length;
+    int length = cast(int) items.length;
     OS.SendMessage (handle, OS.LB_RESETCONTENT, 0, 0);
     OS.SendMessage (handle, OS.LB_INITSTORAGE, length, length * 32);
     int index = 0;
@@ -1349,7 +1349,7 @@ public void setSelection(int [] indices) {
     // SWT extension: allow null array
     //if (indices is null) error (SWT.ERROR_NULL_ARGUMENT);
     deselectAll ();
-    int length = indices.length;
+    int length = cast(int) indices.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) return;
     select (indices, true);
     if ((style & SWT.MULTI) !is 0) {
@@ -1382,7 +1382,7 @@ public void setSelection (String [] items) {
     // SWT extension: allow null array
     //if (items is null) error (SWT.ERROR_NULL_ARGUMENT);
     deselectAll ();
-    int length = items.length;
+    int length = cast(int) items.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) return;
     int focusIndex = -1;
     for (int i=length-1; i>=0; --i) {

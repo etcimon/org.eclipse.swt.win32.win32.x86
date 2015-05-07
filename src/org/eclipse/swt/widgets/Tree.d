@@ -837,8 +837,8 @@ LRESULT CDDS_ITEMPOSTPAINT (NMTVCUSTOMDRAW* nmcd, int wParam, int lParam) {
                                 if ((column.style & SWT.RIGHT) !is 0) flags |= OS.DT_RIGHT;
                             }
                             StringT buffer = StrToTCHARs (getCodePage (), string, false);
-                            if (!ignoreDrawForeground) OS.DrawText (hDC, buffer.ptr, buffer.length, rect, flags);
-                            OS.DrawText (hDC, buffer.ptr, buffer.length, rect, flags | OS.DT_CALCRECT);
+							if (!ignoreDrawForeground) OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, rect, flags);
+							OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, rect, flags | OS.DT_CALCRECT);
                             if (hFont !is cast(HFONT)-1) hFont = cast(HFONT)OS.SelectObject (hDC, hFont);
                             if (clrText !is -1) clrText = OS.SetTextColor (hDC, clrText);
                             if (clrTextBk !is -1) clrTextBk = OS.SetBkColor (hDC, clrTextBk);
@@ -2108,10 +2108,10 @@ void createItem (TreeItem item, HANDLE hParent, HANDLE hInsertAfter, HANDLE hIte
             */
             int length = 0;
             if (drawCount is 0 && OS.IsWindowVisible (handle)) {
-                length = items.length + 4;
+                length = cast(int) items.length + 4;
             } else {
                 shrink = true;
-                length = Math.max (4, items.length * 3 / 2);
+				length = cast(int) Math.max (4, items.length * 3 / 2);
             }
             TreeItem [] newItems = new TreeItem [length];
             System.arraycopy (items, 0, newItems, 0, items.length);
@@ -4567,7 +4567,7 @@ public void setColumnOrder (int [] order) {
             //oldRects [i] = new RECT ();
             OS.SendMessage (hwndHeader, OS.HDM_GETITEMRECT, i, & oldRects [i]);
         }
-        OS.SendMessage (hwndHeader, OS.HDM_SETORDERARRAY, order.length, order.ptr);
+		OS.SendMessage (hwndHeader, OS.HDM_SETORDERARRAY, cast(int) order.length, order.ptr);
         OS.InvalidateRect (handle, null, true);
         updateImageList ();
         TreeColumn [] newColumns = new TreeColumn [columnCount];
@@ -4924,7 +4924,7 @@ public void setSelection (TreeItem [] items) {
     checkWidget ();
     // SWT extension: allow null array
     //if (items is null) error (SWT.ERROR_NULL_ARGUMENT);
-    int length = items.length;
+    int length = cast(int) items.length;
     if (length is 0 || ((style & SWT.SINGLE) !is 0 && length > 1)) {
         deselectAll();
         return;
@@ -6782,7 +6782,7 @@ override LRESULT WM_RBUTTONDOWN (int wParam, int lParam) {
 override LRESULT WM_PAINT (int wParam, int lParam) {
     if (shrink && !ignoreShrink) {
         /* Resize the item array to fit the last item */
-        int count = items.length - 1;
+        int count = cast(int) items.length - 1;
         while (count >= 0) {
             if (items [count] !is null) break;
             --count;
@@ -7159,12 +7159,12 @@ override LRESULT wmNotifyChild (NMHDR* hdr, int wParam, int lParam) {
                 }
                 if (string !is null) {
                     StringT buffer = StrToTCHARs (getCodePage (), string, false);
-                    int byteCount = Math.min (buffer.length, lptvdi.item.cchTextMax - 1) * TCHAR.sizeof;
+					int byteCount = cast(int) (Math.min (buffer.length, lptvdi.item.cchTextMax - 1) * TCHAR.sizeof);
                     OS.MoveMemory (lptvdi.item.pszText, buffer.ptr, byteCount);
-                    int st = byteCount/TCHAR.sizeof;
+					int st = cast(int) (byteCount/TCHAR.sizeof);
                     lptvdi.item.pszText[ st .. st+1 ] = 0;
                     //OS.MoveMemory (lptvdi.pszText + byteCount, new byte [TCHAR.sizeof], TCHAR.sizeof);
-                    lptvdi.item.cchTextMax = Math.min (lptvdi.item.cchTextMax, string.length + 1);
+					lptvdi.item.cchTextMax = cast(int) Math.min (lptvdi.item.cchTextMax, string.length + 1);
                 }
             }
             if ((lptvdi.item.mask & (OS.TVIF_IMAGE | OS.TVIF_SELECTEDIMAGE)) !is 0) {
@@ -7795,7 +7795,7 @@ LRESULT wmNotifyToolTip (NMTTCUSTOMDRAW* nmcd, int /*long*/ lParam) {
                                 StringT buffer = StrToTCHARs (getCodePage (), string, false);
                                 RECT textRect;
                                 OS.SetRect (&textRect, x, cellRect.top, cellRect.right, cellRect.bottom);
-                                OS.DrawText (nmcd.nmcd.hdc, buffer.ptr, buffer.length, &textRect, flags);
+								OS.DrawText (nmcd.nmcd.hdc, buffer.ptr, cast(int) buffer.length, &textRect, flags);
                             }
                             gc.dispose ();
                             OS.RestoreDC (nmcd.nmcd.hdc, nSavedDC);

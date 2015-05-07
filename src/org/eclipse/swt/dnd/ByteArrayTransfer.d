@@ -67,7 +67,7 @@ import java.lang.all;
  *          // write data to a byte array and then ask super to convert to pMedium
  *          ByteArrayOutputStream out = new ByteArrayOutputStream();
  *          DataOutputStream writeOut = new DataOutputStream(out);
- *          for (int i = 0, length = myTypes.length; i &lt; length;  i++){
+ *          for (int i = 0, length = cast(int) myTypes.length; i &lt; length;  i++){
  *              byte[] buffer = myTypes[i].fileName.getBytes();
  *              writeOut.writeInt(buffer.length);
  *              writeOut.write(buffer);
@@ -177,7 +177,7 @@ protected void javaToNative (Object object, TransferData transferData) {
     // Allocate the memory because the caller (DropTarget) has not handed it in
     // The caller of this method must release the data when it is done with it.
     byte[] data = (cast(ArrayWrapperByte)object).array;
-    int size = data.length;
+    int size = cast(int) data.length;
     auto newPtr = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, size);
     OS.MoveMemory(newPtr, data.ptr, size);
     transferData.stgmedium = new STGMEDIUM();

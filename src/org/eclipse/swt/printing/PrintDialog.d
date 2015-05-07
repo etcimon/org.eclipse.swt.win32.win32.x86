@@ -270,8 +270,8 @@ public PrinterData open() {
         byte buffer [] = printerData.otherData;
         if (buffer !is null && buffer.length !is 0) {
             /* If user setup info from a previous print dialog was specified, restore the DEVMODE struct. */
-            lpInitData = OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, buffer.length);
-            OS.MoveMemory(lpInitData, buffer.ptr, buffer.length);
+			lpInitData = OS.HeapAlloc(hHeap, OS.HEAP_ZERO_MEMORY, cast(int) buffer.length);
+			OS.MoveMemory(lpInitData, buffer.ptr, cast(int) buffer.length);
             pd.hDevMode = lpInitData;
         }
     }
@@ -316,7 +316,7 @@ public PrinterData open() {
         /* Get driver and device from the DEVNAMES struct */
         auto hMem = pd.hDevNames;
         /* Ensure size is a multiple of 2 bytes on UNICODE platforms */
-        int size = OS.GlobalSize(hMem) / TCHAR.sizeof * TCHAR.sizeof;
+		int size = cast(int) (OS.GlobalSize(hMem) / TCHAR.sizeof * TCHAR.sizeof);
         auto ptr = OS.GlobalLock(hMem);
         short[4] offsets;
         OS.MoveMemory(offsets.ptr, ptr, 2 * offsets.length);

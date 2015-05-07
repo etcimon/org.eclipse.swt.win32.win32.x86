@@ -113,7 +113,7 @@ extern(Windows)static int BrowseCallbackProc (HWND hwnd, uint uMsg, int lParam, 
             /* Use the character encoding for the default locale */
 //            int length = OS.IsUnicode ? OS.wcslen (lParam) : OS.strlen (lParam);
 //            TCHAR buffer = new TCHAR (0, length);
-//            int byteCount = buffer.length * TCHAR.sizeof;
+//            int byteCount = cast(int) buffer.length * TCHAR.sizeof;
 //            OS.MoveMemory (buffer, lParam, byteCount);
 //            directoryPath = buffer.toString (0, length);
             pThis.directoryPath = TCHARzToStr( cast(TCHAR*)lParam );
@@ -172,7 +172,7 @@ public String open () {
     if (message.length !is 0) {
         String string = message;
         if (string.indexOf ('&') !is -1) {
-            int length = string.length;
+            int length = cast(int) string.length;
             char [] buffer = new char [length * 2];
             int index = 0;
             for (int i=0; i<length; i++) {
@@ -184,7 +184,7 @@ public String open () {
         }
         /* Use the character encoding for the default locale */
         StringT buffer = StrToTCHARs (0, string, true);
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         lpszTitle = cast(TCHAR*)OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory (lpszTitle, buffer.ptr, byteCount);
     }

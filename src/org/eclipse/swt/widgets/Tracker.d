@@ -987,7 +987,7 @@ override LRESULT wmKeyDown (HWND hwnd, int wParam, int lParam) {
              * values have changed.
              */
             if (rectangles !is oldRectangles) {
-                int length = rectangles.length;
+                int length = cast(int) rectangles.length;
                 if (length !is rectsToErase.length) {
                     draw = true;
                 } else {
@@ -1030,7 +1030,7 @@ override LRESULT wmKeyDown (HWND hwnd, int wParam, int lParam) {
              * values have changed.
              */
             if (rectangles !is oldRectangles) {
-                int length = rectangles.length;
+                int length = cast(int) rectangles.length;
                 if (length !is rectsToErase.length) {
                     draw = true;
                 } else {
@@ -1110,7 +1110,7 @@ LRESULT wmMouse (int message, int /*long*/ wParam, int /*long*/ lParam) {
              * values have changed.
              */
             if (rectangles !is oldRectangles) {
-                int length = rectangles.length;
+                int length = cast(int) rectangles.length;
                 if (length !is rectsToErase.length) {
                     draw = true;
                 } else {
@@ -1162,7 +1162,7 @@ LRESULT wmMouse (int message, int /*long*/ wParam, int /*long*/ lParam) {
              * values have changed.
              */
             if (rectangles !is oldRectangles) {
-                int length = rectangles.length;
+                int length = cast(int) rectangles.length;
                 if (length !is rectsToErase.length) {
                     draw = true;
                 } else {

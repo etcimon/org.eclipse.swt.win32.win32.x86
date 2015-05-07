@@ -333,7 +333,7 @@ override public Point computeSize (int wHint, int hHint, bool changed) {
             StringBuffer buffer = new StringBuffer ();
             buffer.append (string);
             buffer.append (getDecimalSeparator ());
-            int count = digits - string.length;
+            int count = digits - cast(int) string.length;
             while (count >= 0) {
                 buffer.append ("0");
                 count--;
@@ -342,7 +342,7 @@ override public Point computeSize (int wHint, int hHint, bool changed) {
         }
         StringT buffer = StrToTCHARs (getCodePage (), string, false);
         int flags = OS.DT_CALCRECT | OS.DT_EDITCONTROL | OS.DT_NOPREFIX;
-        OS.DrawText (hDC, buffer.ptr, buffer.length, &rect, flags);
+		OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, &rect, flags);
         width = rect.right - rect.left;
         if (newFont !is null ) OS.SelectObject (hDC, oldFont);
         OS.ReleaseDC (hwndText, hDC);
@@ -576,7 +576,7 @@ int getSelectionText (bool [] parseFail) {
                 if (decimalPart.length > digits) {
                     decimalPart = decimalPart.substring (0, digits);
                 } else {
-                    int i = digits - decimalPart.length;
+                    int i = digits - cast(int) decimalPart.length;
                     for (int j = 0; j < i; j++) {
                         decimalPart = decimalPart ~ "0";
                     }
@@ -910,7 +910,7 @@ public void setIncrement (int value) {
     if (value < 1) return;
     auto hHeap = OS.GetProcessHeap ();
     int count = OS.SendMessage (hwndUpDown, OS.UDM_GETACCEL, 0, cast(UDACCEL*)null);
-    auto udaccels = cast(UDACCEL*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, UDACCEL.sizeof * count);
+	auto udaccels = cast(UDACCEL*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, cast(int) (UDACCEL.sizeof * count));
     OS.SendMessage (hwndUpDown, OS.UDM_GETACCEL, count, udaccels);
     int first = -1;
     UDACCEL udaccel;
@@ -1031,7 +1031,7 @@ void setSelection (int value, bool setPos, bool setText, bool notify) {
         } else {
             string = String_valueOf(Math.abs (value));
             String decimalSeparator = getDecimalSeparator ();
-            int index = string.length - digits;
+            int index = cast(int) string.length - digits;
             StringBuffer buffer = new StringBuffer ();
             if (value < 0) buffer.append ("-");
             if (index > 0) {
@@ -1356,7 +1356,7 @@ LRESULT wmClipboard (HWND hwndText, int msg, int wParam, int lParam) {
             StringT buffer = StrToTCHARs (getCodePage (), newText, true);
             if (msg is OS.WM_SETTEXT) {
                 auto hHeap = OS.GetProcessHeap ();
-                int byteCount = buffer.length * TCHAR.sizeof;
+                int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
                 auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
                 OS.MoveMemory (pszText, buffer.ptr, byteCount);
                 int code = OS.CallWindowProc (EditProc, hwndText, msg, wParam, cast(int) pszText);

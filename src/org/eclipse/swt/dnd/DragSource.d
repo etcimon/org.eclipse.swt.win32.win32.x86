@@ -501,7 +501,7 @@ public Control getControl() {
  */
 public DragSourceListener[] getDragListeners() {
     Listener[] listeners = getListeners(DND.DragStart);
-    int length = listeners.length;
+    int length = cast(int) listeners.length;
     DragSourceListener[] dragListeners = new DragSourceListener[length];
     int count = 0;
     for (int i = 0; i < length; i++) {

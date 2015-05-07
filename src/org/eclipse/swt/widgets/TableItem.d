@@ -287,7 +287,7 @@ RECT getBounds (int row, int column, bool getText, bool getImage, bool fullText,
                     }
                     RECT textRect;
                     int flags = OS.DT_NOPREFIX | OS.DT_SINGLELINE | OS.DT_CALCRECT;
-                    OS.DrawText (textDC, buffer.ptr, buffer.length, &textRect, flags);
+					OS.DrawText (textDC, buffer.ptr, cast(int) buffer.length, &textRect, flags);
                     width = textRect.right - textRect.left;
                     if (hDC is null) {
                         if (oldFont !is cast(HFONT)-1) OS.SelectObject (textDC, oldFont);
@@ -398,7 +398,7 @@ RECT getBounds (int row, int column, bool getText, bool getImage, bool fullText,
                     RECT textRect;
                     StringT buffer = StrToTCHARs (parent.getCodePage (), string, false);
                     int flags = OS.DT_NOPREFIX | OS.DT_SINGLELINE | OS.DT_CALCRECT;
-                    OS.DrawText (hDC, buffer.ptr, buffer.length, &textRect, flags);
+					OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, &textRect, flags);
                     rect.right += textRect.right - textRect.left + Table.INSET * 3 + 1;
                 }
             }

@@ -92,7 +92,7 @@ public class Scale : Control {
             lpWndClass.hInstance = hInstance;
             lpWndClass.style &= ~OS.CS_GLOBALCLASS;
             lpWndClass.style |= OS.CS_DBLCLKS;
-            int byteCount = (TrackBarClass.length+1) * TCHAR.sizeof;
+            int byteCount = cast(int) ((TrackBarClass.length+1) * TCHAR.sizeof);
             auto lpszClassName = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             OS.MoveMemory (lpszClassName, TrackBarClass.ptr, byteCount);
             lpWndClass.lpszClassName = lpszClassName;

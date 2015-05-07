@@ -140,7 +140,7 @@ static extern(Windows) int EnumSystemLanguageGroupsProc(uint lpLangGrpId, wchar*
  * @param y y position to start rendering
  */
 public static void drawGlyphs(GC gc, wchar[] renderBuffer, int[] renderDx, int x, int y) {
-    int length_ = renderDx.length;
+    int length_ = cast(int) renderDx.length;
 
     if (!OS.IsWinCE && OS.WIN32_VERSION >= OS.VERSION(4, 10)) {
         if (OS.GetLayout (gc.handle) !is 0) {
@@ -151,7 +151,7 @@ public static void drawGlyphs(GC gc, wchar[] renderBuffer, int[] renderDx, int x
     }
     // render transparently to avoid overlapping segments. fixes bug 40006
     int oldBkMode = OS.SetBkMode(gc.handle, OS.TRANSPARENT);
-    OS.ExtTextOutW(gc.handle, x, y, ETO_GLYPH_INDEX , null, renderBuffer.ptr, renderBuffer.length, renderDx.ptr);
+	OS.ExtTextOutW(gc.handle, x, y, ETO_GLYPH_INDEX , null, renderBuffer.ptr, cast(int) renderBuffer.length, renderDx.ptr);
     OS.SetBkMode(gc.handle, oldBkMode);
 }
 /**
@@ -183,7 +183,7 @@ public static String getRenderInfo(GC gc, String text, int[] order, byte[] class
     }
     OS.TranslateCharsetInfo( cast(uint*)cs, cast(CHARSETINFO*)lpCs.ptr, OS.TCI_SRCCHARSET);
     StringT textBuffer = StrToTCHARs(lpCs[1], text, false);
-    int byteCount = textBuffer.length;
+    int byteCount = cast(int) textBuffer.length;
     bool linkBefore = (flags & LINKBEFORE) is LINKBEFORE;
     bool linkAfter = (flags & LINKAFTER) is LINKAFTER;
 
@@ -223,12 +223,12 @@ public static String getRenderInfo(GC gc, String text, int[] order, byte[] class
     else {
         lpGlyphs2 = [cast(byte) glyphFlags];
     }
-    OS.MoveMemory(result.lpGlyphs, lpGlyphs2.ptr, lpGlyphs2.length);
+	OS.MoveMemory(result.lpGlyphs, lpGlyphs2.ptr, cast(int) lpGlyphs2.length);
 
     if ((flags & CLASSIN) is CLASSIN) {
         // set classification values for the substring
         dwFlags |= GCP_CLASSIN;
-        OS.MoveMemory(result.lpClass, classBuffer.ptr, classBuffer.length);
+		OS.MoveMemory(result.lpClass, classBuffer.ptr, cast(int) classBuffer.length);
     }
 
     wchar[] glyphBuffer = new wchar[result.nGlyphs];
@@ -241,11 +241,11 @@ public static String getRenderInfo(GC gc, String text, int[] order, byte[] class
         // the actual number returned may be less in case of Arabic ligatures.
         result.nGlyphs = length_;
         StringT textBuffer2 = StrToTCHARs(lpCs[1], text.substring(offset, offset + length_), false);
-        OS.GetCharacterPlacement(gc.handle, textBuffer2.ptr, textBuffer2.length, 0, &result, dwFlags);
+		OS.GetCharacterPlacement(gc.handle, textBuffer2.ptr, cast(int) textBuffer2.length, 0, &result, dwFlags);
 
         if (dx !is null) {
             int [] dx2 = new int [result.nGlyphs];
-            OS.MoveMemory(dx2.ptr, result.lpDx, dx2.length * 4);
+			OS.MoveMemory(dx2.ptr, result.lpDx, cast(int) (dx2.length * 4));
             if (isRightOriented) {
                 reverse(dx2);
             }
@@ -253,17 +253,17 @@ public static String getRenderInfo(GC gc, String text, int[] order, byte[] class
         }
         if (order !is null) {
             int [] order2 = new int [length_];
-            OS.MoveMemory(order2.ptr, result.lpOrder, order2.length * 4);
+			OS.MoveMemory(order2.ptr, result.lpOrder, cast(int) (order2.length * 4));
             translateOrder(order2, glyphCount, isRightOriented);
             System.arraycopy (order2, 0, order, offset, length_);
         }
         if (classBuffer !is null) {
             byte [] classBuffer2 = new byte [length_];
-            OS.MoveMemory(classBuffer2.ptr, result.lpClass, classBuffer2.length);
+			OS.MoveMemory(classBuffer2.ptr, result.lpClass, cast(int) classBuffer2.length);
             System.arraycopy (classBuffer2, 0, classBuffer, offset, length_);
         }
         wchar[] glyphBuffer2 = new wchar[result.nGlyphs];
-        OS.MoveMemory(glyphBuffer2.ptr, result.lpGlyphs, glyphBuffer2.length * 2);
+		OS.MoveMemory(glyphBuffer2.ptr, result.lpGlyphs, cast(int) (glyphBuffer2.length * 2));
         if (isRightOriented) {
             reverse(glyphBuffer2);
         }
@@ -312,7 +312,7 @@ public static void getOrderInfo(GC gc, String text, int[] order, byte[] classBuf
     int cs = OS.GetTextCharset(gc.handle);
     OS.TranslateCharsetInfo( cast(uint*) cs, cast(CHARSETINFO*)lpCs.ptr, OS.TCI_SRCCHARSET);
     StringT textBuffer = StrToTCHARs(lpCs[1], text, false);
-    int byteCount = textBuffer.length;
+    int byteCount = cast(int) textBuffer.length;
     bool isRightOriented = false;
     if (!OS.IsWinCE && OS.WIN32_VERSION >= OS.VERSION(4, 10)) {
         isRightOriented = OS.GetLayout(gc.handle) !is 0;
@@ -340,7 +340,7 @@ public static void getOrderInfo(GC gc, String text, int[] order, byte[] classBuf
         // set classification values for the substring, classification values
         // can be specified on input
         dwFlags |= GCP_CLASSIN;
-        OS.MoveMemory(result.lpClass, classBuffer.ptr, classBuffer.length);
+		OS.MoveMemory(result.lpClass, classBuffer.ptr, cast(int) classBuffer.length);
     }
 
     int glyphCount = 0;
@@ -351,17 +351,17 @@ public static void getOrderInfo(GC gc, String text, int[] order, byte[] classBuf
         // the actual number returned may be less in case of Arabic ligatures.
         result.nGlyphs = length_;
         StringT textBuffer2 = StrToTCHARs(lpCs[1], text.substring(offset, offset + length_), false);
-        OS.GetCharacterPlacement(gc.handle, textBuffer2.ptr, textBuffer2.length, 0, &result, dwFlags);
+		OS.GetCharacterPlacement(gc.handle, textBuffer2.ptr, cast(int) textBuffer2.length, 0, &result, dwFlags);
 
         if (order !is null) {
             int [] order2 = new int [length_];
-            OS.MoveMemory(order2.ptr, result.lpOrder, order2.length * 4);
+			OS.MoveMemory(order2.ptr, result.lpOrder, cast(int) (order2.length * 4));
             translateOrder(order2, glyphCount, isRightOriented);
             System.arraycopy (order2, 0, order, offset, length_);
         }
         if (classBuffer !is null) {
             byte [] classBuffer2 = new byte [length_];
-            OS.MoveMemory(classBuffer2.ptr, result.lpClass, classBuffer2.length);
+			OS.MoveMemory(classBuffer2.ptr, result.lpClass, cast(int) classBuffer2.length);
             System.arraycopy (classBuffer2, 0, classBuffer, offset, length_);
         }
         glyphCount += result.nGlyphs;
@@ -586,7 +586,7 @@ static void subclass(HWND hwnd) {
  * @param charArray character array to reverse
  */
 static void reverse(wchar[] charArray) {
-    int length_ = charArray.length;
+    int length_ = cast(int) charArray.length;
     for (int i = 0; i <= (length_  - 1) / 2; i++) {
         wchar tmp = charArray[i];
         charArray[i] = charArray[length_ - 1 - i];
@@ -599,7 +599,7 @@ static void reverse(wchar[] charArray) {
  * @param intArray integer array to reverse
  */
 static void reverse(int[] intArray) {
-    int length_ = intArray.length;
+    int length_ = cast(int) intArray.length;
     for (int i = 0; i <= (length_  - 1) / 2; i++) {
         int tmp = intArray[i];
         intArray[i] = intArray[length_ - 1 - i];
@@ -616,7 +616,7 @@ static void reverse(int[] intArray) {
 */
 static void translateOrder(int[] orderArray, int glyphCount, bool isRightOriented) {
     int maxOrder = 0;
-    int length_ = orderArray.length;
+    int length_ = cast(int) orderArray.length;
     if (isRightOriented) {
         for (int i=0; i<length_; i++) {
             maxOrder = Math.max(maxOrder, orderArray[i]);

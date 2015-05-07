@@ -390,7 +390,7 @@ public DeviceData getDeviceData () {
     data.tracking = tracking;
     if (tracking) {
         synchronized (trackingLock) {
-            int count = 0, length = objects.length;
+            int count = 0, length = cast(int) objects.length;
             for (int i=0; i<length; i++) {
                 if (objects [i] !is null) count++;
             }
@@ -888,7 +888,7 @@ void printErrors () {
                 if (textLayouts !is 0) string ~= String_valueOf(textLayouts) ~ " TextLayout(s), ";
                 if (transforms !is 0) string ~= String_valueOf(transforms) ~ " Transforms(s), ";
                 if (string.length !is 0) {
-                    string = string.substring (0, string.length - 2);
+					string = string.substring (0,  cast(int) (string.length - 2));
                     getDwtLogger().error (  __FILE__, __LINE__, "{}", string);
                 }
                 for (int i=0; i<errors.length; i++) {

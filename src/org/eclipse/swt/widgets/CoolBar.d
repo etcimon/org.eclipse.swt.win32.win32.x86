@@ -314,7 +314,7 @@ void createItem (CoolItem item, int index) {
 
     OS.HeapFree (hHeap, 0, lpText);
     items [item.id = id] = item;
-    int length = originalItems.length;
+    int length = cast(int) originalItems.length;
     CoolItem [] newOriginals = new CoolItem [length + 1];
     System.arraycopy (originalItems, 0, newOriginals, 0, index);
     System.arraycopy (originalItems, index, newOriginals, index + 1, length - index);
@@ -387,7 +387,7 @@ void destroyItem (CoolItem item) {
         if (originalItems [index] is item) break;
         index++;
     }
-    int length = originalItems.length - 1;
+    int length = cast(int) originalItems.length - 1;
     CoolItem [] newOriginals = new CoolItem [length];
     System.arraycopy (originalItems, 0, newOriginals, 0, index);
     System.arraycopy (originalItems, index + 1, newOriginals, index, length - index);

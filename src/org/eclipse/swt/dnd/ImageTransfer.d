@@ -80,7 +80,7 @@ public void javaToNative(Object object, TransferData transferData) {
     ImageData imgData = cast(ImageData)object;
     if (imgData is null) SWT.error(SWT.ERROR_NULL_ARGUMENT);
 
-    int imageSize = imgData.data.length;
+    int imageSize = cast(int) imgData.data.length;
     int imageHeight = imgData.height;
     int bytesPerLine = imgData.bytesPerLine;
 
@@ -111,8 +111,8 @@ public void javaToNative(Object object, TransferData transferData) {
             offset += 4;
         }
     }
-    auto newPtr = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT, BITMAPINFOHEADER.sizeof + colorSize + imageSize);
-    OS.MoveMemory(newPtr, bmi.ptr, bmi.length);
+	auto newPtr = OS.GlobalAlloc(OS.GMEM_FIXED | OS.GMEM_ZEROINIT,  cast(int) (BITMAPINFOHEADER.sizeof + colorSize + imageSize));
+	OS.MoveMemory(newPtr, bmi.ptr,  cast(int) bmi.length);
     auto pBitDest = newPtr + BITMAPINFOHEADER.sizeof + colorSize;
 
     if (imageHeight <= 0) {

@@ -531,7 +531,7 @@ RECT* getBounds (int index, bool getText, bool getImage, bool fullText, bool ful
                             if (hFont is cast(HFONT)-1) hFont = cast(HFONT) OS.SendMessage (hwnd, OS.WM_GETFONT, 0, 0);
                             hFont = OS.SelectObject (hNewDC, hFont);
                         }
-                        OS.DrawText (hNewDC, buffer.ptr, buffer.length, textRect, flags);
+						OS.DrawText (hNewDC, buffer.ptr, cast(int) buffer.length, textRect, flags);
                         if (hDC is null) {
                             OS.SelectObject (hNewDC, hFont);
                             OS.ReleaseDC (hwnd, hNewDC);

@@ -396,12 +396,12 @@ BOOL function(
         TCHAR[] buffer = new TCHAR[ MAX_PATH ];
         buffer[] = 0;
         HANDLE hModule = OS.GetLibraryHandle ();
-        while (OS.GetModuleFileName (hModule, buffer.ptr, buffer.length ) is buffer.length ) {
-            buffer.length = buffer.length + MAX_PATH;
+		while (OS.GetModuleFileName (hModule, buffer.ptr, cast(int) buffer.length ) is buffer.length ) {
+            buffer.length = cast(int) buffer.length + MAX_PATH;
             buffer[] = 0;
         }
         auto hHeap = OS.GetProcessHeap ();
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         TCHAR* pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory (pszText, buffer.ptr, byteCount);
 
@@ -3398,7 +3398,7 @@ static String GetWindowText(HWND hwnd){
     int len = GetWindowTextLength(hwnd);
     if(len > 0){
         TCHAR[] buffer = new TCHAR[len + 1];
-        len = _GetWindowText(hwnd, buffer.ptr, buffer.length);
+		len = _GetWindowText(hwnd, buffer.ptr, cast(int) buffer.length);
         return .TCHARzToStr(buffer.ptr, len);
     }
     return "";
@@ -3580,7 +3580,7 @@ static int strlen( PCHAR ptr ){
     version(Tango){
         return tango.stdc.string.strlen( cast(char*)ptr );
     } else { // Phobos
-        return core.stdc.string.strlen( cast(char*)ptr );
+		return cast(int) core.stdc.string.strlen( cast(char*)ptr );
     }
 }
 
@@ -3603,8 +3603,8 @@ public CHAR[] StrToMBCS(in char[] sc, uint codepage = 0) {
                 CHAR[] result;
                 int i;
                 auto ws = toWCharArray(sc);
-                result.length = OS.WideCharToMultiByte(codepage, 0, ws.ptr, ws.length, null, 0, null, null);
-                i = OS.WideCharToMultiByte(codepage, 0, ws.ptr, ws.length, result.ptr, result.length, null, null);
+				result.length = OS.WideCharToMultiByte(codepage, 0, ws.ptr, cast(int) ws.length, null, 0, null, null);
+				i = OS.WideCharToMultiByte(codepage, 0, ws.ptr, cast(int) ws.length, result.ptr, cast(int) result.length, null, null);
                 assert(i == result.length);
                 return result;
             }
@@ -3624,7 +3624,7 @@ public TryConst!(char)* StrToMBCSz(in char[] sc) {
                 return .toStringz( sc );
             }
             char[] dst;
-            dst.length = sc.length;
+            dst.length = cast(int) sc.length;
             return toStringz( tango.sys.win32.CodePage.CodePage.into( sc, dst ));
         }catch(Exception e){
             // do nothing
@@ -3662,7 +3662,7 @@ public LPCWSTR StrToWCHARz(in char[] sc, uint* length = null ) {
 }
 
 public String MBCSsToStr(in CHAR[] string, uint codepage = 0){
-    return MBCSzToStr( string.ptr, string.length, codepage);
+	return MBCSzToStr( string.ptr, cast(int) string.length, codepage);
 }
 
 public String MBCSzToStr(in PCHAR pString, int _length = -1, uint codepage = 0) {
@@ -3686,7 +3686,7 @@ public String MBCSzToStr(in PCHAR pString, int _length = -1, uint codepage = 0) 
 }
 
 public String WCHARsToStr(in WCHAR[] string){
-    return WCHARzToStr(string.ptr, string.length);
+	return WCHARzToStr(string.ptr, cast(int) string.length);
 }
 
 public String WCHARzToStr(in LPCWSTR pString, int _length = -1)
@@ -3742,7 +3742,7 @@ public static String16 _mbcszToWs(in PCHAR pMBCS, int len, uint codepage = 0)
     wchar[] wbuf;
     // Convert MBCS to unicode
     wbuf.length = OS.MultiByteToWideChar(codepage, 0, pMBCS, len, null, 0);
-    int n = OS.MultiByteToWideChar(codepage, 0, pMBCS, len, wbuf.ptr, wbuf.length);
+	int n = OS.MultiByteToWideChar(codepage, 0, pMBCS, len, wbuf.ptr, cast(int) wbuf.length);
     assert(n == wbuf.length);
     return cast(String16)wbuf;
 }

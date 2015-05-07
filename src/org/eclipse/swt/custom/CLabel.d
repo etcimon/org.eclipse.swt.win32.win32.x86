@@ -215,7 +215,7 @@ private void drawBevelRect(GC gc, int x, int y, int w, int h, Color topleft, Col
 dchar _findMnemonic (String str) {
     if (str is null) return '\0';
     size_t index = 0;
-    size_t length = str.length;
+    size_t length = cast(int) str.length;
     do {
         while (index < length && str[index] !is '&') index++;
         if (++index >= length) return '\0';
@@ -794,7 +794,7 @@ protected String shortenText(GC gc, String t, int width) {
     if (t is null) return null;
     int w = gc.textExtent(ELLIPSIS, DRAW_FLAGS).x;
     if (width<=w) return t;
-    int l = cast(int)t.length;
+    int l = cast(int) cast(int)t.length;
     int max = l/2;
     int min = 0;
     int mid = (max+min)/2 - 1;

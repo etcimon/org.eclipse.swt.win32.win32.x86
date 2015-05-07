@@ -877,7 +877,7 @@ void setMenu (Menu menu, bool dispose) {
         if (info.dwItemData !is id) return;
         int cch = 128;
         auto hHeap = OS.GetProcessHeap ();
-        int byteCount = cch * TCHAR.sizeof;
+		int byteCount = cast(int) (cch * TCHAR.sizeof);
         auto pszText = cast(TCHAR*)OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         info.fMask = OS.MIIM_STATE | OS.MIIM_ID | OS.MIIM_DATA;
         /*
@@ -1059,7 +1059,7 @@ override public void setText (String string) {
         * the string.
         */
         if (string.indexOf ('&') !is -1) {
-            int length_ = string.length;
+            int length_ = cast(int) string.length;
             char[] text = new char [length_];
             string.getChars( 0, length_, text, 0);
             int i = 0, j = 0;
@@ -1070,7 +1070,7 @@ override public void setText (String string) {
         }
         /* Use the character encoding for the default locale */
         StringT buffer = StrToTCHARs (0, string, true);
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory (pszText, buffer.ptr, byteCount);
         auto hwndCB = parent.hwndCB;
@@ -1086,7 +1086,7 @@ override public void setText (String string) {
 
         /* Use the character encoding for the default locale */
         StringT buffer = StrToTCHARs (0, string, true);
-        int byteCount = buffer.length * TCHAR.sizeof;
+        int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
         pszText = cast(TCHAR*)OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
         OS.MoveMemory (pszText, buffer.ptr, byteCount);
         /*

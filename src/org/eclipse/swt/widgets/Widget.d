@@ -649,7 +649,7 @@ Menu getMenu () {
  */
 String getName () {
     String str = this.classinfo.name;
-    int index = str.length;
+    int index = cast(int) str.length;
     while ((--index > 0) && (str[index] !is '.')) {}
     return str[index + 1 .. $ ];
 }
@@ -1185,7 +1185,7 @@ public void setData (String key, Object value) {
     } else {
         if ((state & KEYED_DATA) !is 0) {
             if (index !is table.length) {
-                int len = table.length - 2;
+                int len = cast(int) table.length - 2;
                 if (len is 1) {
                     data = table [0];
                     state &= ~KEYED_DATA;

@@ -530,10 +530,10 @@ public void setVisible (bool visible) {
             StringT buffer2 = StrToTCHARs (0, message, true);
             static if (OS.IsUnicode) {
                 TCHAR [] szInfoTitle = iconData.szInfoTitle;
-                int length1 = Math.min (szInfoTitle.length - 1, buffer1.length);
+				int length1 = cast(int) Math.min (szInfoTitle.length - 1, buffer1.length);
                 System.arraycopy!(TCHAR) (buffer1, 0, szInfoTitle, 0, length1);
                 TCHAR [] szInfo = iconData.szInfo;
-                int length2 = Math.min (szInfo.length - 1, buffer2.length );
+				int length2 = cast(int) Math.min (szInfo.length - 1, buffer2.length );
                 System.arraycopy!(TCHAR) (buffer2, 0, szInfo, 0, length2);
             } else {
                 byte [] szInfoTitle = iconData.szInfoTitle;

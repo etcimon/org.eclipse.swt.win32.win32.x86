@@ -113,7 +113,7 @@ public class TabFolder : Composite {
             auto hHeap = OS.GetProcessHeap ();
             lpWndClass.hInstance = hInstance;
             lpWndClass.style &= ~(OS.CS_HREDRAW | OS.CS_VREDRAW | OS.CS_GLOBALCLASS);
-            int byteCount = (TabFolderClass.length+1) * TCHAR.sizeof;
+            int byteCount = cast(int) ((TabFolderClass.length+1) * TCHAR.sizeof);
             auto lpszClassName = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             OS.MoveMemory (lpszClassName, TabFolderClass.ptr, byteCount);
             lpWndClass.lpszClassName = lpszClassName;
@@ -684,7 +684,7 @@ public void setSelection (TabItem [] items) {
     if (items.length is 0) {
         setSelection (-1, false);
     } else {
-        for (int i=items.length-1; i>=0; --i) {
+		for (int i=cast(int) (items.length-1); i>=0; --i) {
             int index = indexOf (items [i]);
             if (index !is -1) setSelection (index, false);
         }

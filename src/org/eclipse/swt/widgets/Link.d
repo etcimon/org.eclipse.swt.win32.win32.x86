@@ -115,7 +115,7 @@ public class Link : Control {
             lpWndClass.hInstance = hInstance;
             lpWndClass.style &= ~OS.CS_GLOBALCLASS;
             lpWndClass.style |= OS.CS_DBLCLKS;
-            int byteCount = LinkClass.length * TCHAR.sizeof;
+            int byteCount = cast(int) LinkClass.length * TCHAR.sizeof;
             auto lpszClassName = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
             OS.MoveMemory (lpszClassName, LinkClass.ptr, byteCount);
             lpWndClass.lpszClassName = lpszClassName;
@@ -232,7 +232,7 @@ override public Point computeSize (int wHint, int hHint, bool changed) {
                 flags |= OS.DT_WORDBREAK;
                 rect.right = wHint;
             }
-            OS.DrawText (hDC, buffer.ptr, buffer.length, &rect, flags);
+			OS.DrawText (hDC, buffer.ptr, cast(int) buffer.length, &rect, flags);
             width = rect.right - rect.left;
             height = rect.bottom;
         } else {
@@ -463,13 +463,13 @@ public String getText () {
 }
 
 String parse (String string) {
-    int length_ = string.length;
+    int length_ = cast(int) string.length;
     offsets = new Point [length_ / 4];
     ids = new String [length_ / 4];
     mnemonics = new int [length_ / 4 + 1];
     StringBuffer result = new StringBuffer ();
     char [] buffer = new char [length_];
-    string.getChars (0, string.length, buffer, 0);
+	string.getChars (0, cast(int) string.length, buffer, 0);
     int index = 0, state = 0, linkIndex = 0;
     int start = 0, tagStart = 0, linkStart = 0, endtagStart = 0, refStart = 0;
 
@@ -529,7 +529,7 @@ String parse (String string) {
             case 6:
                 if (c is '>') {
                     mnemonics [linkIndex] = parseMnemonics (buffer, start, tagStart, result);
-                    int offset = result.length;
+                    int offset = cast(int) result.length;
                     parseMnemonics (buffer, linkStart, endtagStart, result);
                     offsets [linkIndex] = new Point (offset, result.length - 1);
                     if (ids [linkIndex] is null) {
@@ -815,7 +815,7 @@ override LRESULT WM_GETDLGCODE (int wParam, int lParam) {
         code = callWindowProc (handle, OS.WM_GETDLGCODE, wParam, lParam);
     } else {
         index = focusIndex;
-        count = offsets.length;
+        count = cast(int) offsets.length;
     }
     if (count is 0) {
         return new LRESULT (code | OS.DLGC_STATIC);

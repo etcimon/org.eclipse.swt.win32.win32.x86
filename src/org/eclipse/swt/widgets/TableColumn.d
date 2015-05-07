@@ -812,7 +812,7 @@ override public void setText (String string) {
     */
     auto hHeap = OS.GetProcessHeap ();
     StringT buffer = StrToTCHARs (parent.getCodePage (), fixMnemonic (string, true), true);
-    int byteCount = buffer.length * TCHAR.sizeof;
+    int byteCount = cast(int) (buffer.length * TCHAR.sizeof);
     auto pszText = cast(TCHAR*) OS.HeapAlloc (hHeap, OS.HEAP_ZERO_MEMORY, byteCount);
     OS.MoveMemory (pszText, buffer.ptr, byteCount);
     lvColumn.mask |= OS.LVCF_TEXT;
