@@ -6839,7 +6839,7 @@ version(Tango){
         ubyte lfClipPrecision;
         ubyte lfQuality;
         ubyte lfPitchAndFamily;
-        WCHAR lfFaceName[LF_FACESIZE] = 0;
+        WCHAR[LF_FACESIZE] lfFaceName = 0;
     };
 
     alias LOGFONTW  TLOGFONTW;
@@ -7980,7 +7980,7 @@ version(Tango){
         DWORD SplitCount;
         LARGE_INTEGER QueryTime;
         DWORD StorageDeviceNumber;
-        WCHAR StorageManagerName[8];
+		WCHAR[8] StorageManagerName;
     }
 
     alias DISK_PERFORMANCE _DISK_PERFORMANCE;
@@ -9407,25 +9407,25 @@ version(Tango){
 
     struct ENUMLOGFONTA {
       LOGFONTA elfLogFont;
-      BYTE     elfFullName[LF_FULLFACESIZE];
-      BYTE     elfStyle[LF_FACESIZE];
+		BYTE[LF_FULLFACESIZE]     elfFullName;
+		BYTE[LF_FACESIZE]     elfStyle;
     }
     struct ENUMLOGFONTW {
       LOGFONTW elfLogFont;
-      WCHAR    elfFullName[LF_FULLFACESIZE];
-      WCHAR    elfStyle[LF_FACESIZE];
+		WCHAR[LF_FULLFACESIZE]    elfFullName;
+		WCHAR[LF_FACESIZE]    elfStyle;
     }
     struct ENUMLOGFONTEXA {
         LOGFONTA  elfLogFont;
-        BYTE      elfFullName[LF_FULLFACESIZE];
-        BYTE      elfStyle[LF_FACESIZE];
-        BYTE      elfScript[LF_FACESIZE];
+        BYTE[LF_FULLFACESIZE]      elfFullName;
+        BYTE[LF_FACESIZE]      elfStyle;
+        BYTE[LF_FACESIZE]      elfScript;
     }
     struct ENUMLOGFONTEXW {
         LOGFONTW  elfLogFont;
-        WCHAR     elfFullName[LF_FULLFACESIZE];
-        WCHAR     elfStyle[LF_FACESIZE];
-        WCHAR     elfScript[LF_FACESIZE];
+        WCHAR[LF_FULLFACESIZE]     elfFullName;
+        WCHAR[LF_FACESIZE]     elfStyle;
+        WCHAR[LF_FACESIZE]     elfScript;
     }
     version(Win32SansUnicode){
         alias ENUMLOGFONTA ENUMLOGFONT;
@@ -11457,7 +11457,7 @@ version(Tango){
         DWORD dwMinorVersion;
         DWORD dwBuildNumber;
         DWORD dwPlatformId;
-        CHAR szCSDVersion[ 128 ];
+        CHAR[ 128 ] szCSDVersion;
     }
     alias OSVERSIONINFOA* POSVERSIONINFOA, LPOSVERSIONINFOA;
 
@@ -11468,7 +11468,7 @@ version(Tango){
         DWORD dwMinorVersion;
         DWORD dwBuildNumber;
         DWORD dwPlatformId;
-        WCHAR szCSDVersion[ 128 ];
+        WCHAR[ 128 ] szCSDVersion;
     }
     alias OSVERSIONINFOW* POSVERSIONINFOW, LPOSVERSIONINFOW;
     version(Win32SansUnicode)
@@ -13049,7 +13049,7 @@ version(Tango){
     //#ifdef _WIN64
     //    BYTE     bReserved[6];     // padding for alignment
     //#elif defined(_WIN32)
-        BYTE     bReserved[2];     // padding for alignment
+        BYTE[2]     bReserved;     // padding for alignment
     //#endif
         DWORD_PTR   dwData;
         INT_PTR     iString;
@@ -13337,7 +13337,7 @@ version(Tango){
     struct NMTTDISPINFOA {
         NMHDR hdr;
         LPSTR lpszText;
-        char szText[80];
+        char[80] szText;
         HINSTANCE hinst;
         UINT uFlags;
         LPARAM lParam;
@@ -13346,7 +13346,7 @@ version(Tango){
     struct NMTTDISPINFOW {
         NMHDR hdr;
         LPWSTR lpszText;
-        WCHAR szText[80];
+        WCHAR[80] szText;
         HINSTANCE hinst;
         UINT uFlags;
         LPARAM lParam;
@@ -13632,8 +13632,8 @@ version(Tango){
         DWORD nFileSizeLow;
         DWORD dwReserved0;
         DWORD dwReserved1;
-        WCHAR  cFileName[MAX_PATH];
-        WCHAR  cAlternateFileName[14];
+        WCHAR[MAX_PATH]  cFileName;
+        WCHAR[14]  cAlternateFileName;
     }
 
     alias WIN32_FIND_DATAW* LPWIN32_FIND_DATAW;
@@ -14175,7 +14175,7 @@ version(Tango){
         RECT   rcMonitor;
         RECT   rcWork;
         DWORD  dwFlags;
-        TCHAR  szDevice[CCHDEVICENAME];
+        TCHAR[CCHDEVICENAME]  szDevice;
     }
     alias MONITORINFOEX* LPMONITORINFOEX;
 
@@ -14309,8 +14309,8 @@ struct LITEM {
     int iLink;
     UINT state;
     UINT stateMask;
-    WCHAR szID[MAX_LINKID_TEXT];
-    WCHAR szUrl[L_MAX_URL_LENGTH];
+    WCHAR[MAX_LINKID_TEXT] szID;
+    WCHAR[L_MAX_URL_LENGTH] szUrl;
 }
 struct NMLINK {
     NMHDR hdr;
@@ -14377,7 +14377,7 @@ struct OSVERSIONINFOEX
   DWORD dwMinorVersion;
   DWORD dwBuildNumber;
   DWORD dwPlatformId;
-  TCHAR szCSDVersion[128];
+  TCHAR[128] szCSDVersion;
   WORD wServicePackMajor;
   WORD wServicePackMinor;
   WORD wSuiteMask;
@@ -14575,7 +14575,7 @@ struct COMBOBOXINFO {
 // const uint CCHFORMNAME = 32;
 
 struct DEVMODEA {    // dvmd
-    BYTE   dmDeviceName[CCHDEVICENAME];
+    BYTE[CCHDEVICENAME]   dmDeviceName;
     WORD   dmSpecVersion;
     WORD   dmDriverVersion;
     WORD   dmSize;
@@ -14600,7 +14600,7 @@ struct DEVMODEA {    // dvmd
     short  dmYResolution;
     short  dmTTOption;
     short  dmCollate;
-    BYTE  dmFormName[CCHFORMNAME];
+    BYTE[CCHFORMNAME]  dmFormName;
     WORD  dmLogPixels;
     DWORD  dmBitsPerPel;
     DWORD  dmPelsWidth;
@@ -14622,7 +14622,7 @@ struct DEVMODEA {    // dvmd
 }
 
 struct DEVMODEW {    // dvmd
-    WCHAR  dmDeviceName[CCHDEVICENAME];
+    WCHAR[CCHDEVICENAME]  dmDeviceName;
     WORD   dmSpecVersion;
     WORD   dmDriverVersion;
     WORD   dmSize;
@@ -14646,7 +14646,7 @@ struct DEVMODEW {    // dvmd
     short  dmYResolution;
     short  dmTTOption;
     short  dmCollate;
-    WCHAR dmFormName[CCHFORMNAME];
+    WCHAR[CCHFORMNAME] dmFormName;
     WORD  dmLogPixels;
     DWORD  dmBitsPerPel;
     DWORD  dmPelsWidth;
@@ -15194,15 +15194,15 @@ struct NOTIFYICONDATAA {
     UINT uFlags;
     UINT uCallbackMessage;
     HICON hIcon;
-    char szTip[128] = '\0';
+    char[128] szTip = '\0';
     DWORD dwState;
     DWORD dwStateMask;
-    char szInfo[256] = '\0';
+    char[256] szInfo = '\0';
     union {
         UINT uTimeout;
         UINT uVersion;
     };
-    char szInfoTitle[64] = '\0';
+    char[64] szInfoTitle = '\0';
     DWORD dwInfoFlags;
     GUID guidItem;
     HICON hBalloonIcon;
@@ -15215,15 +15215,15 @@ struct NOTIFYICONDATAW {
     UINT uFlags;
     UINT uCallbackMessage;
     HICON hIcon;
-    WCHAR szTip[128] = '\0';
+    WCHAR[128] szTip = '\0';
     DWORD dwState;
     DWORD dwStateMask;
-    WCHAR szInfo[256] = '\0';
+    WCHAR[256] szInfo = '\0';
     union {
         UINT uTimeout;
         UINT uVersion;
     }
-    WCHAR szInfoTitle[64] = '\0';
+    WCHAR[64] szInfoTitle = '\0';
     DWORD dwInfoFlags;
     GUID guidItem;
     HICON hBalloonIcon;
@@ -15911,7 +15911,7 @@ struct SCROLLBARINFO {
     int xyThumbTop;
     int xyThumbBottom;
     int reserved;
-    DWORD rgstate[CCHILDREN_SCROLLBAR+1];
+    DWORD[CCHILDREN_SCROLLBAR+1] rgstate;
 }
 alias SCROLLBARINFO* PSCROLLBARINFO;
 

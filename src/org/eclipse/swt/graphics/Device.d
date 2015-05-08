@@ -563,13 +563,13 @@ public FontData [] getFontList (String faceName, bool scalable) {
     return result;
 }
 
-String getLastError () {
+static String getLastError () {
     int error = OS.GetLastError();
     if (error is 0) return ""; //$NON-NLS-1$
     return " [GetLastError=0x" ~ .toHex(error) ~ "]"; //$NON-NLS-1$ //$NON-NLS-2$
 }
 
-String getLastErrorText () {
+static String getLastErrorText () {
     int error = OS.GetLastError();
     if (error is 0) return ""; //$NON-NLS-1$
     TCHAR* buffer = null;

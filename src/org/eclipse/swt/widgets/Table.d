@@ -6380,9 +6380,11 @@ override LRESULT wmNotifyChild (NMHDR* hdr, int wParam, int lParam) {
                         buffer = display.tableBuffer = new char [plvfi.item.cchTextMax];
                     }
                     /* Prevents becoming an invalid multibyte string. */
-					long length__ = cast(long) length_;
-                    adjustUTF8index ( string, length__ );
-					length_ = cast(int) length__;
+					version(Win64) {
+						long length__ = cast(long) length_;
+	                    adjustUTF8index ( string, length__ );
+						length_ = cast(int) length__;
+					} else adjustUTF8index ( string, length_ );
                     string.getChars (0, length_, buffer, 0);
                     buffer [length_++] = 0;
                     static if (OS.IsUnicode) {
@@ -6802,7 +6804,7 @@ LRESULT wmNotifyToolTip (NMHDR* hdr, int /*long*/ wParam, int /*long*/ lParam) {
                             NMTTDISPINFO* lpnmtdi = null;
                             if (hdr.code is OS.TTN_GETDISPINFOA) {
                                 lpnmtdi = cast(NMTTDISPINFO*)new NMTTDISPINFOA;
-								OS.MoveMemory (lpnmtdi, lParam, cast(int) NMTTDISPINFOA.sizeof);
+								OS.MoveMemory (cast(void*)lpnmtdi, cast(LPCVOID)lParam, cast(uint) NMTTDISPINFOA.sizeof);
                                 if (lpnmtdi.lpszText !is null) {
                                     (cast(char*)lpnmtdi.lpszText)[0] = 0;
                                 }

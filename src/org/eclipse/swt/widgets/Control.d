@@ -655,8 +655,10 @@ void createHandle () {
         hwndParent,
         null,
         OS.GetModuleHandle (null),
-        widgetCreateStruct ());
-    if (handle is null) error (SWT.ERROR_NO_HANDLES);
+			widgetCreateStruct ());
+		if (handle is null) {
+			error (SWT.ERROR_NO_HANDLES);
+		}
     int bits = OS.GetWindowLong (handle, OS.GWL_STYLE);
     if ((bits & OS.WS_CHILD) !is 0) {
         OS.SetWindowLongPtr (handle, OS.GWLP_ID, cast(LONG_PTR)handle);
@@ -4204,7 +4206,7 @@ LRESULT WM_MBUTTONUP (int /*long*/ wParam, int /*long*/ lParam) {
 }
 
 LRESULT WM_MEASUREITEM (int /*long*/ wParam, int /*long*/ lParam) {
-    MEASUREITEMSTRUCT* struct_ = cast(MEASUREITEMSTRUCT*)lParam;;
+    MEASUREITEMSTRUCT* struct_ = cast(MEASUREITEMSTRUCT*)lParam;
     if (struct_.CtlType is OS.ODT_MENU) {
         MenuItem item = display.getMenuItem (struct_.itemID);
         if (item is null) return null;
